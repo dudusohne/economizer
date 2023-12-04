@@ -3,7 +3,7 @@ import { responsivity } from "../../hooks/useResponsivity";
 
 export const ItemContainer = styled.div`
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr 1fr;
+    grid-template-columns: 1fr 3fr 1fr;
     align-items: center;
     height: 48px;
     column-gap: 16px;
@@ -32,10 +32,21 @@ export const ItemTitle = styled.span`
 
 export const CategoryWrapper = styled.div`
     display: flex;
-    padding: 2px;
+    padding: 2px 6px;
     border-radius: 8px;
     font-size: 12px;
     width: fit-content;
     background-color: ${(props) => props.theme.color.fourth};
     color: ${(props) => props.theme.color.primary};
+    border: 1px solid ${(props) => props.theme.color.primary};
+    letter-spacing: 1.2px;
+`
+
+export const CategoriesPositioner = styled.div`
+    display: flex;
+    flex-direction: row;
+    margin-top: -1.40rem;
+    column-gap: 5px;
+    align-self: flex-end;
+    margin-right: 8px;
 `
