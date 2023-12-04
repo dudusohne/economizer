@@ -9,7 +9,7 @@ export const products: ItemType[] = [
         id: 1,
         name: 'Pão',
         photo: '',
-        prices: [],
+        prices: ['9,40'],
         icon: <GiSlicedBread fontSize={30} color={theme.color.secondary} />,
         categories: ["common", "cheap"]
     },
@@ -17,7 +17,7 @@ export const products: ItemType[] = [
         id: 2,
         name: 'Detergente',
         photo: '',
-        prices: [],
+        prices: ['2,30', '2,19'],
         icon: <LiaWineBottleSolid fontSize={30} color={theme.color.secondary} />,
         categories: ["common", "cheap"]
     },
@@ -25,17 +25,17 @@ export const products: ItemType[] = [
         id: 3,
         name: 'Água Mineral',
         photo: '',
-        prices: [],
+        prices: ['1,20'],
         icon: <FaBottleWater fontSize={30} color={theme.color.secondary} />,
-        categories: []
+        categories: ["common", "cheap"]
     },
     {
         id: 4,
         name: 'Omo Líquido',
         photo: '',
-        prices: [],
+        prices: ['21,89'],
         icon: <LiaWineBottleSolid fontSize={30} color={theme.color.secondary} />,
-        categories: []
+        categories: ["common", "expensive"]
     },
 
 ]
