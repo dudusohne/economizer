@@ -52,4 +52,6 @@ export const CategoriesPositioner = styled.div`
     column-gap: 5px;
     align-self: flex-end;
     margin-right: 8px;
+    height: 20px;
+    margin-bottom: -8px;
 `

@@ -9,7 +9,7 @@ import { FlexCol, FlexRow } from '../../Layout';
 export function EcoModal({ open, onClose, children, title, subtitle }: any) {
     return (
         <Dialog open={open} onClose={onClose}>
-            <FlexRow style={{ alignItems: 'center', justifyContent: 'space-between', padding: '30px' }}>
+            <FlexRow style={{ alignItems: 'center', justifyContent: 'space-between', padding: '30px', overflow: 'hidden' }}>
                 <FlexCol style={{ justifyContent: 'center'}}>
                     <ModalTitle>{title}</ModalTitle>
                     <DialogContentText>{subtitle}</DialogContentText>

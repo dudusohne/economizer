@@ -1,20 +1,28 @@
 import { ESubtitle } from '../../Layout/text';
-import { ItemType } from '../../types/index';
+import { ProductType } from '../../types/index';
+import { icons } from '../../utils/icons';
 import { CategoriesPositioner, CategoryWrapper, ItemContainer, ItemTitle } from './styles';
 
-export function Item({ name, prices, icon, categories }: ItemType) {
+export function Item({ name, prices, iconName, categories }: ProductType) {
+
+    const handleIconRender = (iconName: any) => {
+        return icons[iconName];
+    }
+
     return (
         <>
             <ItemContainer>
-                {icon}
+                {handleIconRender(iconName)}
                 <ItemTitle>{name}</ItemTitle>
-                <ESubtitle>{prices && `R$ ${prices[prices?.length - 1]}`}</ESubtitle>
+                <ESubtitle>{prices && prices?.length > 0 && `R$ ${prices[prices?.length - 1]}`}</ESubtitle>
             </ItemContainer>
-            <CategoriesPositioner>
-                {categories?.map((category, index) =>
-                    <CategoryWrapper key={index}>{category}</CategoryWrapper>
-                )}
-            </CategoriesPositioner>
+            {categories && categories?.length > 0 &&
+                <CategoriesPositioner>
+                    {categories?.filter(category => category).map((category, index) =>
+                        <CategoryWrapper key={index}>{category}</CategoryWrapper>
+                    )}
+                </CategoriesPositioner>
+            }
         </>
     )
 }

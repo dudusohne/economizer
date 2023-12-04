@@ -1,12 +1,21 @@
 import { ReactNode } from "react";
 
-export type ItemType = {
-    id: number;
+export type ProductType = {
+    id?: number;
     name: string;
-    photo?: string;
     prices?: string[];
     icon?: ReactNode;
-    categories?: ItemCategories[];
+    iconName?: string;
+    categories?: ProductCategoriesType[];
 }
 
-export type ItemCategories = 'cheap' | 'common' | 'expensive' | 'rare'
+export type ProductCategoriesType = string;
+
+export type ListType = {
+    id: number;
+    description?: string;
+    itens: number;
+    totalValue?: number;
+    createdAt?: string;
+}
+   
