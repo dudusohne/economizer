@@ -30,7 +30,7 @@ export const NormalPageContainer = styled.div`
 
 export const DividerHorizontal = styled.div`
     height: 2px;
-    background-color: black;
+    background-color: ${(props) => props.theme.color.yellow};
     width: 100%;
     border-radius: 50%;
     margin-block: 16px;
