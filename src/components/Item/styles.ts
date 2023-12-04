@@ -3,16 +3,19 @@ import { responsivity } from "../../hooks/useResponsivity";
 
 export const ItemContainer = styled.div`
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-columns: 0.5fr 4fr 1.5fr;
     align-items: center;
     height: 48px;
     column-gap: 16px;
     border-radius: 8px;
     border: 1px solid ${(props) => props.theme.color.greyDark};
     padding: 8px;
+    transition: all 0.2s ease-in-out;
 
     &:hover {
         cursor: pointer;
+        border: 1px solid ${(props) => props.theme.color.fourth};
+        border-radius: 10px;
     }
 `
 
