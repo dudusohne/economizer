@@ -6,10 +6,18 @@ import { GiSlicedBread } from "react-icons/gi";
 import { NavBarButton, NavBarContainer } from "./styles";
 import { EconomizerIcon, EconomizerText } from "../../Layout/text";
 import { FlexRow } from "../../Layout";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 export function NavBar() {
     const navigate = useNavigate()
     const { pathname } = useLocation()
+
+    const { user } = useContext(AuthContext)
+
+    useEffect(() => {
+        if (!user) navigate('/login')
+    }, [user, pathname])
 
     return (
         <NavBarContainer>

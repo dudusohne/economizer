@@ -18,4 +18,12 @@ export type ListType = {
     totalValue?: number;
     createdAt?: string;
 }
+
+export type User = {
+    uid?: string;
+    displayName: string | null;
+    name?: string | null;
+    email: string | null;
+    photoURL?: string | null;
+}
    

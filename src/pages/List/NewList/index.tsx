@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import TextField from "@mui/material/TextField";
 import { toast } from "react-toastify";
 import Input from "@mui/material/Input";
@@ -11,6 +11,7 @@ import { FlexCol } from "../../../Layout";
 import { endpoints } from "../../../services/endpoints";
 import { GetFireBaseAdmin } from "../../../services/firebase";
 import { Item } from "../../../components/Item";
+import { AuthContext } from "../../../context/AuthContext";
 
 interface NewProductProps {
     open: boolean;
@@ -20,7 +21,7 @@ interface NewProductProps {
 export function NewList({ open, onClose }: NewProductProps) {
     const [formState, setFormState] = useState<any>();
 
-    const { db } = GetFireBaseAdmin();
+    const { db } = useContext(AuthContext)
 
     const { data } = useQuery('get-products', async () => {
         try {

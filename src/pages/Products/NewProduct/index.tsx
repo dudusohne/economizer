@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import TextField from "@mui/material/TextField";
 import { GiSlicedBread } from "react-icons/gi";
 import { toast } from "react-toastify";
@@ -17,6 +17,7 @@ import { EBodyText } from "../../../Layout/text";
 import { EcoButton } from "../../../components/EcoButton";
 import { ProductType } from "../../../types";
 import { endpoints } from "../../../services/endpoints";
+import { AuthContext } from "../../../context/AuthContext";
 
 interface NewProductProps {
     open: boolean;
@@ -36,7 +37,7 @@ export function NewProduct({ open, onClose }: NewProductProps) {
         bathroom: false
     })
 
-    const { db } = GetFireBaseAdmin();
+    const { db } = useContext(AuthContext)
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCategories({
@@ -57,41 +58,44 @@ export function NewProduct({ open, onClose }: NewProductProps) {
         try {
             await endpoints.postNewProduct(db, product)
             toast.success('New Product saved!')
+            onClose();
         } catch (err) {
             toast.error('Product not saved, please try again')
         }
     }
 
     return (
-        <EcoModal open={open} onClose={onClose} title="New Product" subtitle="register  
-        a new product">
+        <EcoModal open={open} onClose={onClose} title="New Product" subtitle="register a new product">
             <FlexCol style={{ width: '100%', rowGap: '8px' }}>
-                <TextField id="filled-basic" label="Name*" variant="filled" onChange={(e) => {
-                    setFormState({
-                        ...formState,
-                        name: e.target.value
-                    })
-                }} />
-                <TextField id="filled-basic" label="Price (R$)" variant="filled" onChange={(e) => {
-                    setFormState({
-                        ...formState,
-                        prices: [e.target.value]
-                    })
-                }} />
-                {/* <DividerHorizontal style={{ margin: '0', backgroundColor: `${theme.color.greyLight}` }}/> */}
+                <TextField id="filled-basic" label="Name*" variant="filled"
+                    onChange={(e) => {
+                        setFormState({
+                            ...formState,
+                            name: e.target.value
+                        })
+                    }} />
+                <TextField id="filled-basic" label="Price (R$)" variant="filled"
+                    onChange={(e) => {
+                        setFormState({
+                            ...formState,
+                            prices: [e.target.value]
+                        })
+                    }} />
                 <EBodyText>Choose an icon:</EBodyText>
                 <FlexRow style={{ columnGap: '8px' }}>
                     <ButtonIconWrapper active={formState.iconName === 'bread'}>
-                        <GiSlicedBread fontSize={30} color={theme.color.secondary} onClick={() => setFormState({
-                            ...formState,
-                            iconName: 'bread'
-                        })} />
+                        <GiSlicedBread fontSize={30} color={theme.color.secondary}
+                            onClick={() => setFormState({
+                                ...formState,
+                                iconName: 'bread'
+                            })} />
                     </ButtonIconWrapper>
                     <ButtonIconWrapper active={formState.iconName === 'bottle'}>
-                        <FaBottleWater fontSize={30} color={theme.color.secondary} onClick={() => setFormState({
-                            ...formState,
-                            iconName: 'bottle'
-                        })} />
+                        <FaBottleWater fontSize={30} color={theme.color.secondary}
+                            onClick={() => setFormState({
+                                ...formState,
+                                iconName: 'bottle'
+                            })} />
                     </ButtonIconWrapper>
                 </FlexRow>
                 <DividerHorizontal style={{ margin: '0', backgroundColor: `${theme.color.greyLight}` }} />
@@ -100,34 +104,51 @@ export function NewProduct({ open, onClose }: NewProductProps) {
                     <FlexRow>
                         <FormGroup>
                             <FormControlLabel
-                                control={<Checkbox checked={meat} onChange={handleChange} name="meat" />}
+                                control={<Checkbox
+                                    checked={meat}
+                                    onChange={handleChange}
+                                    name="meat" />}
                                 label="meat"
                             />
                             <FormControlLabel
-                                control={<Checkbox checked={drink} onChange={handleChange} name="drink" />}
+                                control={<Checkbox
+                                    checked={drink}
+                                    onChange={handleChange}
+                                    name="drink" />}
                                 label="drink"
                             />
                             <FormControlLabel
-                                control={<Checkbox checked={fruit} onChange={handleChange} name="fruit" />}
+                                control={<Checkbox
+                                    checked={fruit}
+                                    onChange={handleChange}
+                                    name="fruit" />}
                                 label="fruit"
                             />
                         </FormGroup>
                         <FormGroup>
                             <FormControlLabel
-                                control={<Checkbox checked={frozen} onChange={handleChange} name="frozen" />}
+                                control={<Checkbox
+                                    checked={frozen}
+                                    onChange={handleChange}
+                                    name="frozen" />}
                                 label="frozen"
                             />
                             <FormControlLabel
-                                control={<Checkbox checked={cleaning} onChange={handleChange} name="cleaning" />}
+                                control={<Checkbox
+                                    checked={cleaning}
+                                    onChange={handleChange}
+                                    name="cleaning" />}
                                 label="cleaning"
                             />
                             <FormControlLabel
-                                control={<Checkbox checked={bathroom} onChange={handleChange} name="bathroom" />}
+                                control={<Checkbox
+                                    checked={bathroom}
+                                    onChange={handleChange}
+                                    name="bathroom" />}
                                 label="bathroom"
                             />
                         </FormGroup>
                     </FlexRow>
-
                 </FormControl>
                 <EcoButton onClick={handleSaveNewProduct} disabled={formState?.name?.length < 1}>
                     SALVAR

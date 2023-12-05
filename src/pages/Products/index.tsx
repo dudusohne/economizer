@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useQuery } from "react-query";
 
 import { DividerHorizontal, FlexCol, FlexRow, NormalPageContainer } from "../../Layout";
@@ -7,19 +7,18 @@ import { ESubtitle } from "../../Layout/text";
 import { Item } from "../../components/Item";
 import { NavBar } from "../../components/NavBar";
 import { NewProduct } from "./NewProduct";
-import { GetFireBaseAdmin } from '../../services/firebase.ts';
 import { endpoints } from "../../services/endpoints.ts";
+import { AuthContext } from "../../context/AuthContext.tsx";
 
 export function Products() {
     const [openProductModal, setOpenProductModal] = useState<boolean>(false)
 
-    const { db } = GetFireBaseAdmin();
+    const { db } = useContext(AuthContext)
 
     const { data } = useQuery('get-products', async () => {
         try {
             const querySnapshot = await endpoints.getProducts(db);
             const products = querySnapshot.docs.map(doc => doc.data());
-            console.log('products::::', products);
             return products
         } catch (error) {
             console.error('Error fetching products:', error);
