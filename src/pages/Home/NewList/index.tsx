@@ -22,16 +22,20 @@ interface NewProductProps {
 
 export function NewList({ open, onClose }: NewProductProps) {
     const [formState, setFormState] = useState<any>({
-        dsecription: '',
+        description: '',
         products: []
     });
 
     const { db } = useContext(AuthContext)
 
-    const { data } = useQuery('get-products', async () => {
+    const { data: products } = useQuery('get-products', async () => {
         try {
             const querySnapshot = await endpoints.getProducts(db);
-            const products = querySnapshot.docs.map(doc => doc.data());
+            const products: any = querySnapshot.docs.map(doc => {
+                const productObject = doc.data();
+                productObject.id = doc.id;
+                return productObject;
+            });
             return products
         } catch (error) {
             console.error('Error fetching products:', error);
@@ -94,7 +98,7 @@ export function NewList({ open, onClose }: NewProductProps) {
                     }
                 />
                 <ItemRecursiveWrapper>
-                    {data?.map((item, index) =>
+                    {products?.map((item: any, index: number) =>
                         <ItemRecursive
                             key={index}
                             id={item.id}

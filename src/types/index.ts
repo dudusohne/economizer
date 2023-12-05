@@ -7,6 +7,8 @@ export type ProductType = {
     icon?: ReactNode;
     iconName?: string;
     categories?: ProductCategoriesType[];
+    onChangeCheckbox?: () => void;
+    checked?: boolean;
 }
 
 export type ProductCategoriesType = string;

@@ -1,10 +1,13 @@
-import { addDoc, collection, getDocs } from 'firebase/firestore'
+import { addDoc, collection, doc, getDoc, getDocs } from 'firebase/firestore'
 
 export class Endpoints {
 
   //GET methods
   getProducts = (db: any) =>
     getDocs(collection(db, "products"))
+
+  getListById = (db: any, id: any) =>
+    getDoc(doc(db, "lists", id))
 
   getLists = (db: any) =>
     getDocs(collection(db, "lists"))

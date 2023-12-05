@@ -9,19 +9,24 @@ import { NewList } from './NewList';
 import { useQuery } from 'react-query';
 import { endpoints } from '../../services/endpoints';
 import { AuthContext } from '../../context/AuthContext';
-import { List } from './List';
+import { useNavigate } from 'react-router-dom';
 
 export function Home() {
     const [openNewListModal, setOpenNewListModal] = useState<boolean>(false)
-    const [openModal, setOpenModal] = useState<boolean>(false)
-    const [currentList, setCurrentList] = useState<any>()
+
+    const navigate = useNavigate()
 
     const { db } = useContext(AuthContext)
 
     const { data } = useQuery('get-lists', async () => {
         try {
             const querySnapshot = await endpoints.getLists(db);
-            const lists = querySnapshot.docs.map(doc => doc.data());
+            const lists = querySnapshot.docs.map(doc => {
+                const data = doc.data();
+                data.id = doc.id;
+                return data;
+            });
+            console.log(lists);
             return lists
         } catch (error) {
             console.error('Error fetching lists:', error);
@@ -29,10 +34,8 @@ export function Home() {
         }
     });
 
-    const handleOpenList = (list: any) => {
-        console.log('here')
-        setCurrentList(list)
-        setOpenModal(true)
+    const handleNavigateToList = (list: any) => {
+        navigate(`/list/${list}`)
     }
 
     return (
@@ -45,19 +48,19 @@ export function Home() {
                 </FlexRow>
                 <DividerHorizontal />
                 <FlexCol style={{ marginTop: '16px', rowGap: '12px' }}>
-                    {data?.map((list) =>
+                    {data?.map((list: any) =>
                         <ListCard
+                            key={list?.id}
                             title={list?.description}
                             items={list?.products?.length}
                             date={list?.date}
                             sum={list?.sum}
-                            onClick={() => handleOpenList(list)}
+                            onClick={() => handleNavigateToList(list.id)}
                         />
                     )}
                 </FlexCol>
             </NormalPageContainer>
             <NewList open={openNewListModal} onClose={() => setOpenNewListModal(false)} />
-            <List open={openModal} onClose={() => setOpenModal(false)} list={currentList} />
         </>
     )
 }

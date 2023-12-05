@@ -16,10 +16,14 @@ export function Products() {
 
     const { db } = useContext(AuthContext)
 
-    const { data } = useQuery('get-products', async () => {
+    const { data: products } = useQuery('get-products', async () => {
         try {
             const querySnapshot = await endpoints.getProducts(db);
-            const products = querySnapshot.docs.map(doc => doc.data());
+            const products: any = querySnapshot.docs.map(doc => {
+                const productObject = doc.data();
+                productObject.id = doc.id;
+                return productObject;
+            });
             return products
         } catch (error) {
             console.error('Error fetching products:', error);
@@ -37,12 +41,12 @@ export function Products() {
                 </FlexRow>
                 <DividerHorizontal />
                 <ProductRecursiveWrapper>
-                    {data?.map((item, index) =>
+                    {products?.map((item: any, index: any) =>
                         <Item
                             key={index}
                             id={item.id}
                             name={item.name}
-                             iconName={item.iconName}
+                            iconName={item.iconName}
                             icon={item.icon}
                             categories={item.categories}
                             prices={item.prices} />
