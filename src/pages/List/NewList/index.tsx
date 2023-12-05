@@ -1,21 +1,15 @@
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
-
-import { EcoModal } from "../../../components/Modal";
-import { FlexCol, FlexRow } from "../../../Layout";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { endpoints } from "../../../services/endpoints";
-import { GetFireBaseAdmin } from "../../../services/firebase";
-import { GiToaster } from "react-icons/gi";
 import { toast } from "react-toastify";
 import Input from "@mui/material/Input";
 import InputAdornment from "@mui/material/InputAdornment";
 import { CiSearch } from "react-icons/ci";
 import { useQuery } from "react-query";
+
+import { EcoModal } from "../../../components/Modal";
+import { FlexCol } from "../../../Layout";
+import { endpoints } from "../../../services/endpoints";
+import { GetFireBaseAdmin } from "../../../services/firebase";
 import { Item } from "../../../components/Item";
 
 interface NewProductProps {

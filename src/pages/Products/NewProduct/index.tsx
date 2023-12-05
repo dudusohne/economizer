@@ -16,6 +16,7 @@ import { ButtonIconWrapper } from "./styles";
 import { EBodyText } from "../../../Layout/text";
 import { EcoButton } from "../../../components/EcoButton";
 import { ProductType } from "../../../types";
+import { endpoints } from "../../../services/endpoints";
 
 interface NewProductProps {
     open: boolean;
@@ -54,7 +55,7 @@ export function NewProduct({ open, onClose }: NewProductProps) {
             categories: categories
         }
         try {
-            // await endpoints.postNewProduct(db, product)
+            await endpoints.postNewProduct(db, product)
             toast.success('New Product saved!')
         } catch (err) {
             toast.error('Product not saved, please try again')
