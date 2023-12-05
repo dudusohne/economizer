@@ -4,7 +4,7 @@ import { CiSearch } from "react-icons/ci";
 
 import { ItemRecursive } from "../../components/ItemRecursive";
 import { EcoButton } from "../../components/EcoButton";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useQuery } from "react-query";
 import { endpoints } from "../../services/endpoints";
@@ -17,19 +17,17 @@ import { FlexCol, FlexRow } from "../../Layout";
 
 export function List() {
     const { db } = useContext(AuthContext)
+    const [search, setSearch] = useState<any>('')
 
     const { id } = useParams()
 
-    const { data } = useQuery(['get-list-by-id', id], async () => {
+    const { data: list } = useQuery(['get-list-by-id', id], async () => {
         try {
             const querySnapshot = await endpoints.getListById(db, id);
             if (querySnapshot.exists()) {
                 const data = querySnapshot.data();
                 data.id = querySnapshot.id;
-                console.log(data)
                 return data;
-            } else {
-                console.log("No such document!");
             }
         } catch (error: any) {
             toast.error('Error fetching products:', error);
@@ -41,9 +39,16 @@ export function List() {
 
     }
 
-    const handleFoundedItems = (item: any) => {
-        console.log('item:::::', item)
+    const handleFoundedItems = (list: any) => {
+        console.log('item:::::', list)
     }
+
+    const searchItems = (list: any) => {
+        const listLowerCase = list.name.toLowerCase();
+        const searchLowerCase = search.toLowerCase();
+
+        return listLowerCase.includes(searchLowerCase);
+    };
 
     return (
         <>
@@ -51,12 +56,13 @@ export function List() {
             <ListContainer>
                 <FlexCol style={{ paddingBlock: '24px', width: '100%' }}>
                     <FlexRow style={{ justifyContent: 'space-between', marginBottom: '12px' }}>
-                        <ETitle>{data?.description}</ETitle>
-                        <ETitle>{data?.date}</ETitle>
+                        <ETitle>{list?.description}</ETitle>
+                        <ETitle>{list?.date}</ETitle>
                     </FlexRow>
                     <Input
                         id="input-with-icon-adornment"
                         placeholder="search"
+                        onChange={(e: any) => setSearch(e.target.value)}
                         endAdornment={
                             <InputAdornment position="end">
                                 <CiSearch />
@@ -65,23 +71,28 @@ export function List() {
                     />
                 </FlexCol>
                 <ListRecursiveWrapper>
-                    {data?.products.map((item: any, index: any) =>
+                    {list?.products.filter(searchItems).map((itemList: any, index: any) =>
                         <ItemRecursive
                             key={index}
-                            id={item.id}
-                            name={item.name}
-                            iconName={item.iconName}
-                            icon={item.icon}
-                            categories={item.categories}
-                            prices={item.prices}
-                            checked={item.checked}
-                            onChangeCheckbox={() => handleFoundedItems(item)}
+                            id={itemList.id}
+                            name={itemList.name}
+                            iconName={itemList.iconName}
+                            icon={itemList.icon}
+                            categories={itemList.categories}
+                            prices={itemList.prices}
+                            checked={itemList.checked}
+                            onChangeCheckbox={() => handleFoundedItems(itemList)}
                         />
                     )}
                 </ListRecursiveWrapper>
-                <EcoButton onClick={handleSaveNewList} style={{ height: '50px', width: '100%' }}>
-                    FINALIZAR LISTA
-                </EcoButton>
+                <FlexRow style={{ width: '100%', columnGap: '12px' }}>
+                    <EcoButton onClick={handleSaveNewList} style={{ height: '50px', width: '100%' }}>
+                        SAVE
+                    </EcoButton>
+                    <EcoButton onClick={handleSaveNewList} style={{ height: '50px', width: '100%', backgroundColor: 'red' }}>
+                        DELETE
+                    </EcoButton>
+                </FlexRow>
             </ListContainer>
         </>
     )

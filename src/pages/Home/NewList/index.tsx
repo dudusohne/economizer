@@ -114,7 +114,7 @@ export function NewList({ open, onClose }: NewProductProps) {
                 </ItemRecursiveWrapper>
                 <FlexCol>
                     <EcoButton onClick={handleSaveNewList}>
-                        SALVAR
+                        CREATE
                     </EcoButton>
                 </FlexCol>
             </FlexCol>

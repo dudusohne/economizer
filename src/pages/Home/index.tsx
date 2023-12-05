@@ -26,7 +26,6 @@ export function Home() {
                 data.id = doc.id;
                 return data;
             });
-            console.log(lists);
             return lists
         } catch (error) {
             console.error('Error fetching lists:', error);

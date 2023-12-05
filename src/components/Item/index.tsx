@@ -9,6 +9,8 @@ export function Item({ name, prices, iconName, categories }: ProductType) {
         return icons[iconName];
     }
 
+    const trueKeys = Object.keys(categories).filter(key => categories[key]);
+
     return (
         <>
             <ItemContainer>
@@ -16,9 +18,9 @@ export function Item({ name, prices, iconName, categories }: ProductType) {
                 <ItemTitle>{name}</ItemTitle>
                 <ESubtitle>{prices && prices?.length > 0 && `R$ ${prices[prices?.length - 1]}`}</ESubtitle>
             </ItemContainer>
-            {categories && categories?.length > 0 &&
+            {trueKeys &&
                 <CategoriesPositioner>
-                    {categories?.filter(category => category).map((category, index) =>
+                    {trueKeys?.map((category, index) =>
                         <CategoryWrapper key={index}>{category}</CategoryWrapper>
                     )}
                 </CategoriesPositioner>
@@ -26,3 +28,5 @@ export function Item({ name, prices, iconName, categories }: ProductType) {
         </>
     )
 }
+
+// .filter(category => category.value === true)

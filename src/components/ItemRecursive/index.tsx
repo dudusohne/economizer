@@ -10,6 +10,8 @@ export function ItemRecursive({ name, prices, iconName, categories, onChangeChec
         return icons[iconName];
     }
 
+    const trueKeys = Object.keys(categories).filter(key => categories[key]);
+
     return (
         <>
             <ItemRecursiveContainer>
@@ -22,10 +24,10 @@ export function ItemRecursive({ name, prices, iconName, categories, onChangeChec
                     name={iconName}
                 />
             </ItemRecursiveContainer>
-            {categories && categories?.length > 0 &&
+            {trueKeys &&
                 <CategoriesPositioner>
-                    {categories?.filter((category: any) => category).map((category: any, index: number) =>
-                        <CategoryWrapper key={index}>{category[category]}</CategoryWrapper>
+                    {trueKeys?.map((category: any, index: number) =>
+                        <CategoryWrapper key={index}>{category}</CategoryWrapper>
                     )}
                 </CategoriesPositioner>
             }
