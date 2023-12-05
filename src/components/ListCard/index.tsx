@@ -2,17 +2,17 @@ import { FlexCol } from "../../Layout";
 import { ESubtitle, ETitle } from "../../Layout/text";
 import { ListCardContainer } from "./styles";
 
-export function ListCard() {
+export function ListCard({ title, items, date, sum, onClick }: any) {
 
     return (
-        <ListCardContainer>
+        <ListCardContainer onClick={onClick}>
             <FlexCol style={{ rowGap: '8px' }}>
-                <ETitle>mercado1</ETitle>
-                <ESubtitle>5 itens</ESubtitle>
+                <ETitle>{title}</ETitle>
+                <ESubtitle>{items} itens</ESubtitle>
             </FlexCol>
             <FlexCol style={{ alignItems: 'flex-end', rowGap: '8px'}}>
-                <ESubtitle>04/12/2023</ESubtitle>
-                <ETitle>aprox.: R$ 35,90</ETitle>
+                <ESubtitle>{date}</ESubtitle>
+                <ETitle>aprox.: R$ {sum}</ETitle>
             </FlexCol>
         </ListCardContainer>
     )

@@ -28,6 +28,18 @@ export const EconomizerIcon = styled(GiTakeMyMoney)`
     `}
 `
 
+export const EconomizerIconBig = styled(GiTakeMyMoney)`
+    color: ${(props) => props.theme.color.fourth};
+
+    ${responsivity.lowMobile`
+        font-size: 48px;
+    `}
+
+    ${responsivity.tablet`
+        font-size: 54px;
+    `}
+`
+
 export const ETitle = styled.div<{color?: string}>`
     font-weight: 500;
     font-family: 'Ubuntu', sans-serif;

@@ -16,7 +16,6 @@ export const ButtonContainer = styled.button<{disabled?: boolean}>`
 
     &:hover {
         cursor: pointer;
-        transform: scale(1.03);
         opacity: 0.9;
     }
 `

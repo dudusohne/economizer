@@ -6,6 +6,9 @@ export class Endpoints {
   getProducts = (db: any) =>
     getDocs(collection(db, "products"))
 
+  getLists = (db: any) =>
+    getDocs(collection(db, "lists"))
+
   //POST methods
   postNewProduct = (db: any, product: any) => 
     addDoc(collection(db, "products"), product)

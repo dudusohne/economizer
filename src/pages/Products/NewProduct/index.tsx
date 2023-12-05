@@ -10,7 +10,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 
 import { EcoModal } from "../../../components/Modal";
 import { DividerHorizontal, FlexCol, FlexRow } from "../../../Layout";
-import { GetFireBaseAdmin } from "../../../services/firebase";
 import { theme } from "../../../theme";
 import { ButtonIconWrapper } from "./styles";
 import { EBodyText } from "../../../Layout/text";
@@ -18,6 +17,7 @@ import { EcoButton } from "../../../components/EcoButton";
 import { ProductType } from "../../../types";
 import { endpoints } from "../../../services/endpoints";
 import { AuthContext } from "../../../context/AuthContext";
+import { queryClient } from "../../../services/queryClient";
 
 interface NewProductProps {
     open: boolean;
@@ -58,6 +58,7 @@ export function NewProduct({ open, onClose }: NewProductProps) {
         try {
             await endpoints.postNewProduct(db, product)
             toast.success('New Product saved!')
+            queryClient.invalidateQueries('get-products')
             onClose();
         } catch (err) {
             toast.error('Product not saved, please try again')
@@ -66,7 +67,7 @@ export function NewProduct({ open, onClose }: NewProductProps) {
 
     return (
         <EcoModal open={open} onClose={onClose} title="New Product" subtitle="register a new product">
-            <FlexCol style={{ width: '100%', rowGap: '8px' }}>
+            <FlexCol style={{ width: '100%', rowGap: '8px', overflowX: 'hidden' }}>
                 <TextField id="filled-basic" label="Name*" variant="filled"
                     onChange={(e) => {
                         setFormState({

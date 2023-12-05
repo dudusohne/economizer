@@ -18,7 +18,7 @@ export function EcoModal({ open, onClose, children, title, subtitle }: any) {
                     <ModalCloseIcon onClick={onClose} />
                 </DialogActions>
             </FlexRow>
-            <DialogContent>
+            <DialogContent style={{ overflow: 'hidden', padding: '0px 30px 30px 30px' }}>
                 {children}
             </DialogContent>
         </Dialog>

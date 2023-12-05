@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useQuery } from "react-query";
 
-import { DividerHorizontal, FlexCol, FlexRow, NormalPageContainer } from "../../Layout";
+import { DividerHorizontal, FlexRow, NormalPageContainer } from "../../Layout";
 import { ListPlusIcon } from "../../Layout/icons";
 import { ESubtitle } from "../../Layout/text";
 import { Item } from "../../components/Item";
@@ -9,6 +9,7 @@ import { NavBar } from "../../components/NavBar";
 import { NewProduct } from "./NewProduct";
 import { endpoints } from "../../services/endpoints.ts";
 import { AuthContext } from "../../context/AuthContext.tsx";
+import { ProductRecursiveWrapper } from "./styles.ts";
 
 export function Products() {
     const [openProductModal, setOpenProductModal] = useState<boolean>(false)
@@ -35,7 +36,7 @@ export function Products() {
                     <ListPlusIcon onClick={() => setOpenProductModal(true)} />
                 </FlexRow>
                 <DividerHorizontal />
-                <FlexCol style={{ rowGap: '12px', marginTop: '16px' }}>
+                <ProductRecursiveWrapper>
                     {data?.map((item, index) =>
                         <Item
                             key={index}
@@ -46,7 +47,7 @@ export function Products() {
                             categories={item.categories}
                             prices={item.prices} />
                     )}
-                </FlexCol>
+                </ProductRecursiveWrapper>
             </NormalPageContainer>
             <NewProduct open={openProductModal} onClose={() => setOpenProductModal(false)} />
         </>
