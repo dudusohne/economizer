@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const ListCardContainer = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr 1fr 0.3fr;
     align-items: center;
     height: 48px;
     column-gap: 16px;

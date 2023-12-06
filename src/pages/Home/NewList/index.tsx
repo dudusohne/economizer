@@ -14,6 +14,7 @@ import { ItemRecursive } from "../../../components/ItemRecursive";
 import { ItemRecursiveWrapper } from './styles';
 import { EcoButton } from "../../../components/EcoButton";
 import { queryClient } from "../../../services/queryClient";
+import { ProductType } from "../../../types";
 
 interface NewProductProps {
     open: boolean;
@@ -49,6 +50,8 @@ export function NewList({ open, onClose }: NewProductProps) {
             return sum + lastPrice;
         }, 0);
 
+        const summFormatted = parseFloat(summ.toFixed(2));
+
         const newdate = new Date();
         const dia = newdate?.getDate();
         const mes = newdate?.getMonth() + 1; 
@@ -60,7 +63,7 @@ export function NewList({ open, onClose }: NewProductProps) {
             description: formState.description,
             products: formState.products,
             date: dataFormatada,
-            sum: summ
+            sum: summFormatted
         }
         try {
             await endpoints.postNewList(db, product)
@@ -73,11 +76,21 @@ export function NewList({ open, onClose }: NewProductProps) {
         }
     }
 
-    const handleSelectedItems = (item: any) => {
-        setFormState({
-            ...formState,
-            products: [...formState.products, item]
-        })
+    const handleSelectedItems = (item: ProductType) => {
+        const itemExists = formState.products.some((product: ProductType) => product.id === item.id);
+
+        if (itemExists) {
+            const newProducts = formState.products.filter((product: ProductType) => product.id !== item.id);
+            setFormState({
+                ...formState,
+                products: newProducts
+            });
+        } else {
+            setFormState({
+                ...formState,
+                products: [...formState.products, item]
+            });
+        }
     }
 
     return (

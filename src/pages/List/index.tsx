@@ -4,7 +4,7 @@ import { CiSearch } from "react-icons/ci";
 
 import { ItemRecursive } from "../../components/ItemRecursive";
 import { EcoButton } from "../../components/EcoButton";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useQuery } from "react-query";
 import { endpoints } from "../../services/endpoints";
@@ -14,6 +14,7 @@ import { ETitle } from "../../Layout/text";
 import { ListContainer, ListRecursiveWrapper } from "./styles";
 import { NavBar } from "../../components/NavBar";
 import { FlexCol, FlexRow } from "../../Layout";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export function List() {
     const { db } = useContext(AuthContext)
@@ -50,6 +51,30 @@ export function List() {
         return listLowerCase.includes(searchLowerCase);
     };
 
+    const doesntMatchesMobile = useMediaQuery('(min-width:420px)')
+    const doesntMatchesNotebook = useMediaQuery('(min-width:992px)')
+
+    const handleScreenHeight = useCallback(
+        (number: number) => {
+            const percentOfScreen = (percentage: number) =>
+                (window.innerHeight * percentage) / 100
+
+            const mobileHeight =
+                window.innerHeight < 700 ? percentOfScreen(37) : percentOfScreen(40)
+            const desktopHeight =
+                window.innerHeight < 700 ? percentOfScreen(60) : percentOfScreen(30)
+
+            if (doesntMatchesMobile) {
+                const desResolved = `${number - desktopHeight}px`
+                return desResolved
+            } else {
+                const mobResolved = `${number - mobileHeight}px`
+                return mobResolved
+            }
+        },
+        [window.innerHeight, doesntMatchesMobile, doesntMatchesNotebook]
+    )
+
     return (
         <>
             <NavBar />
@@ -70,7 +95,7 @@ export function List() {
                         }
                     />
                 </FlexCol>
-                <ListRecursiveWrapper>
+                <ListRecursiveWrapper height={handleScreenHeight(window.innerHeight)}>
                     {list?.products.filter(searchItems).map((itemList: any, index: any) =>
                         <ItemRecursive
                             key={index}

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useQuery } from "react-query";
 
 import { DividerHorizontal, FlexRow, NormalPageContainer } from "../../Layout";
@@ -10,6 +10,7 @@ import { NewProduct } from "./NewProduct";
 import { endpoints } from "../../services/endpoints.ts";
 import { AuthContext } from "../../context/AuthContext.tsx";
 import { ProductRecursiveWrapper } from "./styles.ts";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export function Products() {
     const [openProductModal, setOpenProductModal] = useState<boolean>(false)
@@ -31,6 +32,30 @@ export function Products() {
         }
     });
 
+    const doesntMatchesMobile = useMediaQuery('(min-width:420px)')
+    const doesntMatchesNotebook = useMediaQuery('(min-width:992px)')
+
+    const handleScreenHeight = useCallback(
+        (number: number) => {
+            const percentOfScreen = (percentage: number) =>
+                (window.innerHeight * percentage) / 100
+
+            const mobileHeight =
+                window.innerHeight < 700 ? percentOfScreen(37) : percentOfScreen(30)
+            const desktopHeight =
+                window.innerHeight < 700 ? percentOfScreen(60) : percentOfScreen(30)
+
+            if (doesntMatchesMobile) {
+                const desResolved = `${number - desktopHeight}px`
+                return desResolved
+            } else {
+                const mobResolved = `${number - mobileHeight}px`
+                return mobResolved
+            }
+        },
+        [window.innerHeight, doesntMatchesMobile, doesntMatchesNotebook]
+    )
+
     return (
         <>
             <NavBar />
@@ -40,7 +65,7 @@ export function Products() {
                     <ListPlusIcon onClick={() => setOpenProductModal(true)} />
                 </FlexRow>
                 <DividerHorizontal />
-                <ProductRecursiveWrapper>
+                <ProductRecursiveWrapper height={handleScreenHeight(window.innerHeight)}>
                     {products?.map((item: any, index: any) =>
                         <Item
                             key={index}

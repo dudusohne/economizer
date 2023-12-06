@@ -14,6 +14,7 @@ export const theme = {
     white: '#ffffff',
     yellow: '#ffc55a',
     green: '#42B983',
+    red: 'red',
   },
 
   size: {

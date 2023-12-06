@@ -1,8 +1,9 @@
+import Checkbox from '@mui/material/Checkbox';
+
 import { ESubtitle } from '../../Layout/text';
 import { ProductType } from '../../types';
 import { icons } from '../../utils/icons';
 import { CategoriesPositioner, CategoryWrapper, ItemRecursiveContainer } from './styles';
-import Checkbox from '@mui/material/Checkbox';
 
 export function ItemRecursive({ name, prices, iconName, categories, onChangeCheckbox, checked }: ProductType) {
 
