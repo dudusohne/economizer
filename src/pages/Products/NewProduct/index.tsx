@@ -1,12 +1,13 @@
 import { useContext, useState } from "react";
 import TextField from "@mui/material/TextField";
-import { GiSlicedBread } from "react-icons/gi";
+import { GiFrozenOrb, GiFruitBowl, GiSlicedBread } from "react-icons/gi";
 import { toast } from "react-toastify";
 import { FaBottleWater } from "react-icons/fa6";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { MdBathroom, MdOutlineCleaningServices } from "react-icons/md";
 
 import { EcoModal } from "../../../components/Modal";
 import { DividerHorizontal, FlexCol, FlexRow } from "../../../Layout";
@@ -56,7 +57,7 @@ export function NewProduct({ open, onClose }: NewProductProps) {
             categories: categories
         }
         try {
-            await endpoints.postNewProduct(db, product)
+            await endpoints.addProduct(db, product)
             toast.success('New Product saved!')
             queryClient.invalidateQueries('get-products')
             onClose();
@@ -83,7 +84,7 @@ export function NewProduct({ open, onClose }: NewProductProps) {
                         })
                     }} />
                 <EBodyText>Choose an icon:</EBodyText>
-                <FlexRow style={{ columnGap: '8px' }}>
+                <FlexRow style={{ columnGap: '8px', overflowX: 'auto', paddingBottom: '8px' }}>
                     <ButtonIconWrapper active={formState.iconName === 'bread'}>
                         <GiSlicedBread fontSize={30} color={theme.color.secondary}
                             onClick={() => setFormState({
@@ -96,6 +97,34 @@ export function NewProduct({ open, onClose }: NewProductProps) {
                             onClick={() => setFormState({
                                 ...formState,
                                 iconName: 'bottle'
+                            })} />
+                    </ButtonIconWrapper>
+                    <ButtonIconWrapper active={formState.iconName === 'fruit'}>
+                        <GiFruitBowl fontSize={30} color={theme.color.secondary}
+                            onClick={() => setFormState({
+                                ...formState,
+                                iconName: 'fruit'
+                            })} />
+                    </ButtonIconWrapper>
+                    <ButtonIconWrapper active={formState.iconName === 'frozen'}>
+                        <GiFrozenOrb fontSize={30} color={theme.color.secondary}
+                            onClick={() => setFormState({
+                                ...formState,
+                                iconName: 'frozen'
+                            })} />
+                    </ButtonIconWrapper>
+                    <ButtonIconWrapper active={formState.iconName === 'cleaning'}>
+                        <MdOutlineCleaningServices fontSize={30} color={theme.color.secondary}
+                            onClick={() => setFormState({
+                                ...formState,
+                                iconName: 'cleaning'
+                            })} />
+                    </ButtonIconWrapper>
+                    <ButtonIconWrapper active={formState.iconName === 'bathroom'}>
+                        <MdBathroom fontSize={30} color={theme.color.secondary}
+                            onClick={() => setFormState({
+                                ...formState,
+                                iconName: 'bathroom'
                             })} />
                     </ButtonIconWrapper>
                 </FlexRow>

@@ -18,7 +18,6 @@ export function ItemRecursive({ name, prices, iconName, categories, onChangeChec
             <ItemRecursiveContainer>
                 {handleIconRender(iconName)}
                 <ESubtitle>{name}</ESubtitle>
-                {/* <ESubtitle>{prices && prices?.length > 0 && `R$ ${prices[prices?.length - 1]}`}</ESubtitle> */}
                 <Checkbox
                     checked={checked}
                     onChange={onChangeCheckbox}

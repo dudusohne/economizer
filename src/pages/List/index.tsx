@@ -1,33 +1,37 @@
+import { useCallback, useContext, useState } from "react";
 import Input from "@mui/material/Input";
 import InputAdornment from "@mui/material/InputAdornment";
 import { CiSearch } from "react-icons/ci";
-
-import { ItemRecursive } from "../../components/ItemRecursive";
-import { EcoButton } from "../../components/EcoButton";
-import { useCallback, useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
 import { useQuery } from "react-query";
-import { endpoints } from "../../services/endpoints";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
+import { EcoButton } from "../../components/EcoButton";
+import { AuthContext } from "../../context/AuthContext";
+import { endpoints } from "../../services/endpoints";
 import { ETitle } from "../../Layout/text";
 import { ListContainer, ListRecursiveWrapper } from "./styles";
 import { NavBar } from "../../components/NavBar";
 import { FlexCol, FlexRow } from "../../Layout";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import { ItemToCheck } from "../../components/ItemToCheck";
 
 export function List() {
     const { db } = useContext(AuthContext)
     const [search, setSearch] = useState<any>('')
+    const [items, setItems] = useState<any[]>([])
 
     const { id } = useParams()
 
+    const navigate = useNavigate()
+
     const { data: list } = useQuery(['get-list-by-id', id], async () => {
         try {
-            const querySnapshot = await endpoints.getListById(db, id);
+            const querySnapshot = await endpoints.getListById(db, id ?? '');
             if (querySnapshot.exists()) {
                 const data = querySnapshot.data();
                 data.id = querySnapshot.id;
+                setItems(data.products)
                 return data;
             }
         } catch (error: any) {
@@ -36,13 +40,45 @@ export function List() {
         }
     });
 
-    const handleSaveNewList = () => {
+    const handleUpdateList = async () => {
+        const updatedList = {
+            id: list?.id,
+            description: list?.description,
+            products: items
+        }
 
+        try {
+            await endpoints.updateList(db, list?.id, updatedList)
+            setItems([])
+            setSearch('')
+            navigate('/')
+        } catch (err: any) {
+            toast.error(err)
+        }
     }
 
-    const handleFoundedItems = (list: any) => {
-        console.log('item:::::', list)
+    const handleDeleteList = async () => {
+        try {
+            await endpoints.deleteList(db, list?.id)
+            setItems([])
+            setSearch('')
+            navigate('/')
+        } catch (err: any) {
+            toast.error(err)
+        }
     }
+
+    const handleCheckboxChange = (item: any) => {
+        setItems((prevItems: any) => {
+            return prevItems.map((i: any) => {
+                if (i.id === item.id) {
+                    return { ...i, checked: !i.checked };
+                } else {
+                    return i;
+                }
+            });
+        });
+    };
 
     const searchItems = (list: any) => {
         const listLowerCase = list.name.toLowerCase();
@@ -96,8 +132,8 @@ export function List() {
                     />
                 </FlexCol>
                 <ListRecursiveWrapper height={handleScreenHeight(window.innerHeight)}>
-                    {list?.products.filter(searchItems).map((itemList: any, index: any) =>
-                        <ItemRecursive
+                    {items.filter(searchItems).map((itemList: any, index: any) =>
+                        <ItemToCheck
                             key={index}
                             id={itemList.id}
                             name={itemList.name}
@@ -106,15 +142,15 @@ export function List() {
                             categories={itemList.categories}
                             prices={itemList.prices}
                             checked={itemList.checked}
-                            onChangeCheckbox={() => handleFoundedItems(itemList)}
+                            onChangeCheckbox={() => handleCheckboxChange(itemList)}
                         />
                     )}
                 </ListRecursiveWrapper>
                 <FlexRow style={{ width: '100%', columnGap: '12px' }}>
-                    <EcoButton onClick={handleSaveNewList} style={{ height: '50px', width: '100%' }}>
+                    <EcoButton onClick={handleUpdateList} style={{ height: '50px', width: '100%' }}>
                         SAVE
                     </EcoButton>
-                    <EcoButton onClick={handleSaveNewList} style={{ height: '50px', width: '100%', backgroundColor: 'red' }}>
+                    <EcoButton onClick={handleDeleteList} style={{ height: '50px', width: '100%', backgroundColor: 'red' }}>
                         DELETE
                     </EcoButton>
                 </FlexRow>

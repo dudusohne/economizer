@@ -17,4 +17,6 @@ export const ListRecursiveWrapper = styled.div<{height?: any}>`
     height: ${(props) => `${props.height}` ?? '60dvh'};;
     overflow-y: auto;
     overflow-x: hidden;
+    padding-right: 20px;
+    padding-bottom: 10px;
 `

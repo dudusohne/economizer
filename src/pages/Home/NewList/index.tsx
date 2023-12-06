@@ -50,23 +50,27 @@ export function NewList({ open, onClose }: NewProductProps) {
             return sum + lastPrice;
         }, 0);
 
+        const productsFormatted = formState.products.map((product: any) => {
+            return { ...product, checked: false };
+        });
+
         const summFormatted = parseFloat(summ.toFixed(2));
 
         const newdate = new Date();
         const dia = newdate?.getDate();
-        const mes = newdate?.getMonth() + 1; 
+        const mes = newdate?.getMonth() + 1;
         const ano = newdate?.getFullYear();
 
         const dataFormatada = `${dia}/${mes}/${ano}`;
 
         const product = {
             description: formState.description,
-            products: formState.products,
+            products: productsFormatted,
             date: dataFormatada,
             sum: summFormatted
         }
         try {
-            await endpoints.postNewList(db, product)
+            await endpoints.addList(db, product)
             toast.success('New List saved!')
             setFormState({ description: '', products: [] })
             queryClient.invalidateQueries('get-lists')
@@ -111,7 +115,7 @@ export function NewList({ open, onClose }: NewProductProps) {
                     }
                 />
                 <ItemRecursiveWrapper>
-                    {products?.map((item: any, index: number) =>
+                    {products?.map((item: ProductType, index: number) =>
                         <ItemRecursive
                             key={index}
                             id={item.id}
