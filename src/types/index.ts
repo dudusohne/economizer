@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 export type ProductType = {
     id?: number;
-    name: string;
+    name?: string;
     prices?: string[];
     icon?: ReactNode;
     iconName?: string;
@@ -14,9 +14,12 @@ export type ProductType = {
 export type ListType = {
     id: number;
     description?: string;
-    itens: number;
+    itens?: number;
     totalValue?: number;
     createdAt?: string;
+    products?: any[];
+    date?: string;
+    sum?: number;
 }
 
 export type User = {

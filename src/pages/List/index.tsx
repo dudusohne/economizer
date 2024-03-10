@@ -1,11 +1,8 @@
-import { useCallback, useContext, useState } from "react";
-import Input from "@mui/material/Input";
-import InputAdornment from "@mui/material/InputAdornment";
-import { CiSearch } from "react-icons/ci";
-import { useQuery } from "react-query";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useMediaQuery from "@mui/material/useMediaQuery";
+// import { CiSearch } from "react-icons/ci";
 
 import { EcoButton } from "../../components/EcoButton";
 import { AuthContext } from "../../context/AuthContext";
@@ -15,33 +12,28 @@ import { ListContainer, ListRecursiveWrapper } from "./styles";
 import { NavBar } from "../../components/NavBar";
 import { FlexCol, FlexRow } from "../../Layout";
 import { ItemToCheck } from "../../components/ItemToCheck";
+import { makeQuery } from "../../services/queries";
+import { ListType, ProductType } from "../../types";
+import { queryClient } from "../../services/queryClient";
+// import { Input, InputAdornment } from "@mui/material";
 
 export function List() {
     const { db } = useContext(AuthContext)
-    const [search, setSearch] = useState<any>('')
+    const [search, setSearch] = useState<string | undefined>(undefined)
     const [items, setItems] = useState<any[]>([])
 
     const { id } = useParams()
 
     const navigate = useNavigate()
 
-    const { data: list } = useQuery(['get-list-by-id', id], async () => {
-        try {
-            const querySnapshot = await endpoints.getListById(db, id ?? '');
-            if (querySnapshot.exists()) {
-                const data = querySnapshot.data();
-                data.id = querySnapshot.id;
-                setItems(data.products)
-                return data;
-            }
-        } catch (error: any) {
-            toast.error('Error fetching products:', error);
-            throw error;
-        }
-    });
+   const { useGetListById } = makeQuery()
+
+    const { list } = useGetListById(id ?? '')
+    
+    useEffect(() => setItems(list?.products), [list])
 
     const handleUpdateList = async () => {
-        const updatedList = {
+        const updatedList: ListType = {
             id: list?.id,
             description: list?.description,
             products: items
@@ -49,8 +41,9 @@ export function List() {
 
         try {
             await endpoints.updateList(db, list?.id, updatedList)
+            queryClient.invalidateQueries('get-list-by-id')
             setItems([])
-            setSearch('')
+            setSearch(undefined)
             navigate('/')
         } catch (err: any) {
             toast.error(err)
@@ -60,8 +53,9 @@ export function List() {
     const handleDeleteList = async () => {
         try {
             await endpoints.deleteList(db, list?.id)
+            queryClient.invalidateQueries('get-list-by-id')
             setItems([])
-            setSearch('')
+            setSearch(undefined)
             navigate('/')
         } catch (err: any) {
             toast.error(err)
@@ -78,13 +72,6 @@ export function List() {
                 }
             });
         });
-    };
-
-    const searchItems = (list: any) => {
-        const listLowerCase = list.name.toLowerCase();
-        const searchLowerCase = search.toLowerCase();
-
-        return listLowerCase.includes(searchLowerCase);
     };
 
     const doesntMatchesMobile = useMediaQuery('(min-width:420px)')
@@ -120,7 +107,7 @@ export function List() {
                         <ETitle>{list?.description}</ETitle>
                         <ETitle>{list?.date}</ETitle>
                     </FlexRow>
-                    <Input
+                    {/* <Input
                         id="input-with-icon-adornment"
                         placeholder="search"
                         onChange={(e: any) => setSearch(e.target.value)}
@@ -129,20 +116,20 @@ export function List() {
                                 <CiSearch />
                             </InputAdornment>
                         }
-                    />
+                    /> */}
                 </FlexCol>
                 <ListRecursiveWrapper height={handleScreenHeight(window.innerHeight)}>
-                    {items.filter(searchItems).map((itemList: any, index: any) =>
+                    {items?.map((products: ProductType, index: number) =>
                         <ItemToCheck
                             key={index}
-                            id={itemList.id}
-                            name={itemList.name}
-                            iconName={itemList.iconName}
-                            icon={itemList.icon}
-                            categories={itemList.categories}
-                            prices={itemList.prices}
-                            checked={itemList.checked}
-                            onChangeCheckbox={() => handleCheckboxChange(itemList)}
+                            id={products.id}
+                            name={products.name}
+                            iconName={products.iconName}
+                            icon={products.icon}
+                            categories={products.categories}
+                            prices={products.prices}
+                            checked={products.checked}
+                            onChangeCheckbox={() => handleCheckboxChange(products)}
                         />
                     )}
                 </ListRecursiveWrapper>

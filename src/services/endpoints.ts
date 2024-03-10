@@ -1,40 +1,40 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore'
-import { ProductType } from '../types'
+import { Firestore, addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore'
+import { ListType, ProductType } from '../types'
 
 export class Endpoints {
 
   //GET methods
-  getProducts = (db: any) =>
+  getProducts = (db: Firestore) =>
     getDocs(collection(db, "products"))
 
-  getProductById = (db: any, id: string) =>
+  getProductById = (db: Firestore, id: string) =>
     getDoc(doc(db, "products", id))
 
-  getLists = (db: any) =>
+  getLists = (db: Firestore) =>
     getDocs(collection(db, "lists"))
 
-  getListById = (db: any, id: string) =>
+  getListById = (db: Firestore, id: string) =>
     getDoc(doc(db, "lists", id))
 
   //POST methods
-  addProduct = (db: any, product: ProductType) => 
+  addProduct = (db: Firestore, product: ProductType) => 
     addDoc(collection(db, "products"), product)
 
-  addList = (db: any, list: any) => 
+  addList = (db: Firestore, list: ListType) => 
     addDoc(collection(db, "lists"), list)
 
   //PATCH methods
-  updateProduct = (db: any, id: string, product: ProductType) => 
+  updateProduct = (db: Firestore, id: string, product: ProductType) => 
     updateDoc(doc(db, "products", id), product)
 
-  updateList = (db: any, id: string, list: any) => 
+  updateList = (db: Firestore, id: string, list: ListType) => 
     updateDoc(doc(db, "lists", id), list)
 
   //DELETE methods
-  deleteProduct = (db: any, id: string) => 
+  deleteProduct = (db: Firestore, id: string) => 
     deleteDoc(doc(db, "products", id))
 
-  deleteList = (db: any, id: string) => 
+  deleteList = (db: Firestore, id: string) => 
     deleteDoc(doc(db, "lists", id))
 }
 
