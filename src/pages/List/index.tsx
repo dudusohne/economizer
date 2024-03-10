@@ -19,7 +19,7 @@ import { queryClient } from "../../services/queryClient";
 
 export function List() {
     const { db } = useContext(AuthContext)
-    const [search, setSearch] = useState<string | undefined>(undefined)
+    const [, setSearch] = useState<string | undefined>(undefined)
     const [items, setItems] = useState<any[]>([])
 
     const { id } = useParams()

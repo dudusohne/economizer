@@ -180,7 +180,7 @@ export function NewProduct({ open, onClose }: NewProductProps) {
                         </FormGroup>
                     </FlexRow>
                 </FormControl>
-                <EcoButton onClick={handleSaveNewProduct} disabled={formState?.name?.length < 1}>
+                <EcoButton onClick={handleSaveNewProduct} disabled={formState?.name && formState?.name?.length < 1}>
                     CREATE
                 </EcoButton>
             </FlexCol>

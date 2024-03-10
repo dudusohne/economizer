@@ -14,7 +14,7 @@ import { ItemRecursive } from "../../../components/ItemRecursive";
 import { ItemRecursiveWrapper } from './styles';
 import { EcoButton } from "../../../components/EcoButton";
 import { queryClient } from "../../../services/queryClient";
-import { ProductType } from "../../../types";
+import { ListType, ProductType } from "../../../types";
 
 interface NewProductProps {
     open: boolean;
@@ -63,7 +63,7 @@ export function NewList({ open, onClose }: NewProductProps) {
 
         const dataFormatada = `${dia}/${mes}/${ano}`;
 
-        const product = {
+        const product: ListType = {
             description: formState.description,
             products: productsFormatted,
             date: dataFormatada,

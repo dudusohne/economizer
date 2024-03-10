@@ -19,7 +19,7 @@ export function Home() {
 
     const { lists } = useGetLists()
 
-    const handleNavigateToList = (list: number) => {
+    const handleNavigateToList = (list?: number) => {
         navigate(`/list/${list}`)
     }
 
@@ -40,7 +40,7 @@ export function Home() {
                             items={list?.products?.length}
                             date={list?.date}
                             sum={list?.sum}
-                            onClick={() => handleNavigateToList(list.id)}
+                            onClick={() => handleNavigateToList(list?.id)}
                         />
                     )}
                 </FlexCol>

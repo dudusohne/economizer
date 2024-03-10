@@ -12,7 +12,7 @@ export type ProductType = {
 }
 
 export type ListType = {
-    id: number;
+    id?: number;
     description?: string;
     itens?: number;
     totalValue?: number;
