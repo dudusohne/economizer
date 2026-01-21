@@ -56,17 +56,19 @@ export function NewList({ open, onClose }: NewProductProps) {
 
         const summFormatted = parseFloat(summ.toFixed(2));
 
-        const newdate = new Date();
-        const dia = newdate?.getDate();
-        const mes = newdate?.getMonth() + 1;
-        const ano = newdate?.getFullYear();
+        // const newdate = new Date();
+        // const dia = newdate?.getDate();
+        // const mes = newdate?.getMonth() + 1;
+        // const ano = newdate?.getFullYear();
 
-        const dataFormatada = `${dia}/${mes}/${ano}`;
+        // const dataFormatada = `${dia}/${mes}/${ano}`;
+
+        const dateISO = new Date().toISOString().split('T')[0]
 
         const product: ListType = {
             description: formState.description,
             products: productsFormatted,
-            date: dataFormatada,
+            date: dateISO,
             sum: summFormatted
         }
         try {
@@ -103,7 +105,7 @@ export function NewList({ open, onClose }: NewProductProps) {
 
     return (
         <EcoModal open={open} onClose={onClose} title="New List" subtitle="begin a new list">
-            <FlexCol style={{ width: '100%', rowGap: '16px', overflowY: 'hidden' }}>
+            <FlexCol style={{ width: '100%', rowGap: '16px' }}>
                 <TextField id="filled-basic" label="Name*" variant="filled" onChange={(e) => {
                     setFormState({
                         ...formState,
@@ -133,11 +135,9 @@ export function NewList({ open, onClose }: NewProductProps) {
                         />
                     )}
                 </ItemRecursiveWrapper>
-                <FlexCol>
-                    <EcoButton onClick={handleSaveNewList}>
-                        CREATE
-                    </EcoButton>
-                </FlexCol>
+                <EcoButton style={{ height: '50px' }} onClick={handleSaveNewList}>
+                    CREATE
+                </EcoButton>
             </FlexCol>
         </EcoModal>
     )

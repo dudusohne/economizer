@@ -46,8 +46,48 @@ export const makeQuery = () => {
         return { list, error }
     }
 
+    //CATEGORY
+    function useGetCategories() {
+
+        const { data: categories, error } = useQuery('get-categories', async () => {
+            try {
+                const querySnapshot = await endpoints.getCategories(db);
+                const categoriesData = querySnapshot.docs.map(doc => {
+                    const data = doc.data();
+                    data.id = doc.id;
+                    return data;
+                });
+                return categoriesData
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        });
+
+        return { categories, error }
+    }
+
+    function useGetCategoryById(id: string) {
+        const { data: categoryById, error } = useQuery(['get-category-by-id', id], async () => {
+            try {
+                const querySnapshot = await endpoints.getCategoryById(db, id ?? '');
+                if (querySnapshot.exists()) {
+                    const data = querySnapshot.data();
+                    data.id = querySnapshot.id;
+                    return data;
+                }
+            } catch (error: any) {
+                toast.error('Error fetching category:', error);
+                throw error;
+            }
+        });
+
+        return { categoryById, error }
+    }
+
     return {
         useGetLists,
-        useGetListById
+        useGetListById,
+        useGetCategories,
+        useGetCategoryById
     }
 }

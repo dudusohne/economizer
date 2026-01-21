@@ -9,12 +9,12 @@ export const ItemRecursiveWrapper = styled.div`
     padding-right: 16px;
     
     ${responsivity.lowMobile`
-        height: 46vh;
-        height: 46dvh;
+        height: 40vh;
+        height: 40dvh;
     `}
 
     ${responsivity.tablet`
-        height: 69vh;
-        height: 69dvh;
+        height: 47vh;
+        height: 47dvh;
     `}
 `

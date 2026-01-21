@@ -15,6 +15,8 @@ import { endpoints } from '../../services/endpoints';
 import { toast } from 'react-toastify';
 import { queryClient } from '../../services/queryClient';
 
+import emptyListImage from '../../assets/list-icon.png'
+
 export function Home() {
     const [openNewListModal, setOpenNewListModal] = useState<boolean>(false)
 
@@ -69,6 +71,10 @@ export function Home() {
                             onDelete={() => list.id && handleDeleteList(list.id.toString())}
                             onEdit={() => handleNavigateToList(list?.id)}
                         />
+                    )}
+
+                    {!(lists as ListType[])?.length && (
+                        <img src={emptyListImage} style={{ width: '410px', alignSelf: 'center' }} />
                     )}
                 </FlexCol>
             </NormalPageContainer>

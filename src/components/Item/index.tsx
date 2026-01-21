@@ -9,8 +9,6 @@ export function Item({ name, prices, iconName, categories, onClick }: ProductTyp
         return icons[iconName];
     }
 
-    const trueKeys = categories ? Object.keys(categories).filter(key => categories[key]) : null
-
     return (
         <>
             <ItemContainer onClick={onClick}>
@@ -18,9 +16,9 @@ export function Item({ name, prices, iconName, categories, onClick }: ProductTyp
                 <ItemTitle>{name}</ItemTitle>
                 <ESubtitle>{prices && prices?.length > 0 && `R$ ${prices[prices?.length - 1]}`}</ESubtitle>
             </ItemContainer>
-            {trueKeys &&
+            {categories?.length &&
                 <CategoriesPositioner>
-                    {trueKeys?.map((category, index) =>
+                    {categories?.map((category, index) =>
                         <CategoryWrapper key={index}>{category}</CategoryWrapper>
                     )}
                 </CategoriesPositioner>
@@ -28,5 +26,3 @@ export function Item({ name, prices, iconName, categories, onClick }: ProductTyp
         </>
     )
 }
-
-// .filter(category => category.value === true)

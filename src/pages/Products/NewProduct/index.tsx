@@ -1,12 +1,7 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { GiFrozenOrb, GiFruitBowl, GiSlicedBread } from "react-icons/gi";
-import { toast } from "react-toastify";
 import { FaBottleWater } from "react-icons/fa6";
-import FormControl from "@mui/material/FormControl";
-import FormGroup from "@mui/material/FormGroup";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import { MdBathroom, MdOutlineCleaningServices } from "react-icons/md";
 
 import { EcoModal } from "../../../components/Modal";
@@ -16,9 +11,7 @@ import { ButtonIconWrapper } from "./styles";
 import { EBodyText } from "../../../Layout/text";
 import { EcoButton } from "../../../components/EcoButton";
 import { ProductType } from "../../../types";
-import { endpoints } from "../../../services/endpoints";
-import { AuthContext } from "../../../context/AuthContext";
-import { queryClient } from "../../../services/queryClient";
+import useProducts from "../../../hooks/useProducts";
 
 interface NewProductProps {
     open: boolean;
@@ -27,44 +20,16 @@ interface NewProductProps {
 
 export function NewProduct({ open, onClose }: NewProductProps) {
     const [formState, setFormState] = useState<ProductType>({
-        name: ''
+        name: '',
+        categories: []
     });
-    const [categories, setCategories] = useState({
-        meat: false,
-        drink: false,
-        fruit: false,
-        frozen: false,
-        cleaning: false,
-        bathroom: false
-    })
-
-    const { db } = useContext(AuthContext)
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setCategories({
-            ...categories,
-            [event.target.name]: event.target.checked,
-        });
+     
     };
 
-    const { meat, drink, fruit, frozen, cleaning, bathroom } = categories;
-
-    const handleSaveNewProduct = async () => {
-        const product = {
-            name: formState.name,
-            prices: formState.prices,
-            iconName: formState.iconName,
-            categories: categories
-        }
-        try {
-            await endpoints.addProduct(db, product)
-            toast.success('New Product saved!')
-            queryClient.invalidateQueries('get-products')
-            onClose();
-        } catch (err) {
-            toast.error('Product not saved, please try again')
-        }
-    }
+    //CREATE "PRODUCTS"
+    const { handleAddProduct } = useProducts()
 
     return (
         <EcoModal open={open} onClose={onClose} title="New Product" subtitle="register a new product">
@@ -129,7 +94,7 @@ export function NewProduct({ open, onClose }: NewProductProps) {
                     </ButtonIconWrapper>
                 </FlexRow>
                 <DividerHorizontal style={{ margin: '0', backgroundColor: `${theme.color.greyLight}` }} />
-                <FormControl component="fieldset" variant="standard">
+                {/* <FormControl component="fieldset" variant="standard">
                     <EBodyText>Categories:</EBodyText>
                     <FlexRow>
                         <FormGroup>
@@ -179,8 +144,8 @@ export function NewProduct({ open, onClose }: NewProductProps) {
                             />
                         </FormGroup>
                     </FlexRow>
-                </FormControl>
-                <EcoButton onClick={handleSaveNewProduct} disabled={formState?.name && formState?.name?.length < 1}>
+                </FormControl> */}
+                <EcoButton onClick={handleAddProduct} disabled={formState?.name && formState?.name?.length < 1}>
                     CREATE
                 </EcoButton>
             </FlexCol>

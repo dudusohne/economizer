@@ -5,7 +5,6 @@ export const ProductRecursiveWrapper = styled.div<{height?: string}>`
     flex-direction: column;
     overflow-y: auto;
     row-gap: 16px;
-    padding-right: 16px;
     height: ${(props) => props.height ?? '60vh'};
     height: ${(props) => props.height ?? '60dvh'};
 `
