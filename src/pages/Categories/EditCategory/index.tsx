@@ -10,7 +10,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import { EcoButton } from "../../../components/EcoButton";
 import { queryClient } from "../../../services/queryClient";
 import { CategoryType } from "../../../types";
-import { categoryColor, icons, renderIcon } from "../../../utils/icons";
+import { categoryColor, icons } from "../../../utils/icons";
 import { makeQuery } from "../../../services/queries";
 import { theme } from "../../../theme";
 
