@@ -4,8 +4,9 @@ import { responsivity } from "../../hooks/useResponsivity";
 export const ItemContainer = styled.div`
     display: flex;
     flex: 1;
+    max-height: 40px;
     align-items: center;
-    height: 48px;
+    justify-content: space-between;
     column-gap: 16px;
     border-radius: 8px;
     border: 1px solid ${(props) => props.theme.color.greyDark};
@@ -48,7 +49,7 @@ export const CategoryWrapper = styled.div`
 export const CategoriesPositioner = styled.div`
     display: flex;
     flex-direction: row;
-    margin-top: -1.40rem;
+    margin-top: -1.5rem;
     column-gap: 5px;
     align-self: flex-end;
     margin-right: 8px;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { responsivity } from "../../hooks/useResponsivity";
+import { responsivity } from "../../../hooks/useResponsivity";
 
 export const EItemSubtitle = styled.div<{color?: string; checked?: boolean}>`
     font-weight: 400;
@@ -15,21 +15,20 @@ export const EItemSubtitle = styled.div<{color?: string; checked?: boolean}>`
     `}
 `
 
-export const ItemToCheckContainer = styled.div`
+export const CategoryToCheckContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    height: 40px;
+    height: 20px;
     column-gap: 16px;
     border-radius: 8px;
-    border: 1px solid ${(props) => props.theme.color.greyDark};
-    padding: 8px;
+    padding-block: 6px;
+    padding-inline: 2px;
     transition: all 0.2s ease-in-out;
 
     &:hover {
         cursor: pointer;
-        border: 1px solid ${(props) => props.theme.color.fourth};
-        border-radius: 10px;
+        opacity: 0.7;
     }
 `

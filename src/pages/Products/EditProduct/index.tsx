@@ -1,13 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
-import { GiFrozenOrb, GiFruitBowl, GiSlicedBread } from "react-icons/gi";
 import { toast } from "react-toastify";
-import { FaBottleWater } from "react-icons/fa6";
-import FormControl from "@mui/material/FormControl";
-import FormGroup from "@mui/material/FormGroup";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { MdBathroom, MdDeleteForever, MdOutlineCleaningServices } from "react-icons/md";
+import { MdDeleteForever } from "react-icons/md";
 import { useQuery } from "react-query";
 
 import { EcoModal } from "../../../components/Modal";
@@ -19,7 +13,7 @@ import { ProductType, CategoryType } from "../../../types";
 import { endpoints } from "../../../services/endpoints";
 import { AuthContext } from "../../../context/AuthContext";
 import { queryClient } from "../../../services/queryClient";
-import { ButtonIconWrapper } from "../NewProduct/styles";
+import { CategoryToCheck } from "../../Categories/CategoryToCheck";
 
 interface EditProductProps {
     open: boolean;
@@ -39,7 +33,6 @@ export function EditProduct({ open, onClose, productId }: EditProductProps) {
 
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-    // 🔹 Product
     const { data: product } = useQuery(
         ["get-product-by-id", productId],
         async () => {
@@ -49,7 +42,6 @@ export function EditProduct({ open, onClose, productId }: EditProductProps) {
         { enabled: !!productId && open }
     );
 
-    // 🔹 Categories
     const { data: categories } = useQuery(
         "get-categories",
         async () => {
@@ -62,7 +54,6 @@ export function EditProduct({ open, onClose, productId }: EditProductProps) {
         { enabled: open }
     );
 
-    // 🔹 Populate form
     useEffect(() => {
         if (!product) return;
 
@@ -76,13 +67,19 @@ export function EditProduct({ open, onClose, productId }: EditProductProps) {
         setSelectedCategories(product.categories || []);
     }, [product]);
 
-    // 🔹 Toggle category
-    const toggleCategory = (categoryId: string) => {
-        setSelectedCategories(prev =>
-            prev.includes(categoryId)
-                ? prev.filter(id => id !== categoryId)
-                : [...prev, categoryId]
-        );
+    const handleChange = (category: any) => {
+        setFormState((prev) => {
+            const alreadySelected = prev.categories.some(
+                (cat: any) => cat?.id === category.id
+            );
+
+            return {
+                ...prev,
+                categories: alreadySelected
+                    ? prev.categories.filter((cat: any) => cat?.id !== category.id)
+                    : [...prev.categories, category],
+            };
+        });
     };
 
     const handleUpdateProduct = async () => {
@@ -90,13 +87,19 @@ export function EditProduct({ open, onClose, productId }: EditProductProps) {
             name: formState.name,
             prices: formState.prices,
             iconName: formState.iconName,
-            categories: selectedCategories
+            categories: formState.categories
         };
 
         try {
             await endpoints.updateProduct(db, productId, updatedProduct);
             toast.success("Product updated successfully!");
             queryClient.invalidateQueries("get-products");
+            setFormState({
+                name: "",
+                prices: [],
+                iconName: "",
+                categories: []
+            })
             onClose();
         } catch {
             toast.error("Product not updated, please try again");
@@ -133,47 +136,23 @@ export function EditProduct({ open, onClose, productId }: EditProductProps) {
                     onChange={(e) => setFormState({ ...formState, prices: [e.target.value] })}
                 />
 
-                <EBodyText>Choose an icon:</EBodyText>
+                <DividerHorizontal style={{ backgroundColor: theme.color.greyLight, marginBlock: '4px' }} />
 
-                <FlexRow style={{ gap: "8px", overflowX: "auto" }}>
-                    {[
-                        { name: "bread", icon: <GiSlicedBread /> },
-                        { name: "bottle", icon: <FaBottleWater /> },
-                        { name: "fruit", icon: <GiFruitBowl /> },
-                        { name: "frozen", icon: <GiFrozenOrb /> },
-                        { name: "cleaning", icon: <MdOutlineCleaningServices /> },
-                        { name: "bathroom", icon: <MdBathroom /> }
-                    ].map(({ name, icon }) => (
-                        <ButtonIconWrapper
-                            key={name}
-                            active={formState.iconName === name}
-                            onClick={() => setFormState({ ...formState, iconName: name })}
-                        >
-                            {icon}
-                        </ButtonIconWrapper>
-                    ))}
-                </FlexRow>
+                <EBodyText>Categories:</EBodyText>
 
-                <DividerHorizontal style={{ backgroundColor: theme.color.greyLight }} />
+                {categories?.map((item: any) => (
+                    <CategoryToCheck
+                        key={item.id}
+                        name={item.name}
+                        iconName={item.iconName}
+                        checked={formState.categories.some(
+                            (category: any) => category.id === item.id
+                        )}
+                        onChangeCheckbox={() => handleChange(item)}
+                    />
+                ))}
 
-                <FormControl component="fieldset">
-                    <EBodyText>Categories:</EBodyText>
-                    <FlexRow style={{ flexWrap: "wrap" }}>
-                        {categories?.map(category => (
-                            <FormGroup key={category.id}>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            checked={selectedCategories.includes(category.id!)}
-                                            onChange={() => toggleCategory(category.id!)}
-                                        />
-                                    }
-                                    label={category.name}
-                                />
-                            </FormGroup>
-                        ))}
-                    </FlexRow>
-                </FormControl>
+                <DividerHorizontal style={{ backgroundColor: theme.color.greyLight, marginBlock: '4px' }} />
 
                 <FlexRow style={{ gap: "16px" }}>
                     <EcoButton onClick={handleUpdateProduct} style={{ width: "100%" }}>

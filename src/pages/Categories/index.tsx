@@ -1,25 +1,21 @@
-import { useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { useState } from "react";
 import { FlexCol, DividerHorizontal, NormalPageContainer, FlexRow } from "../../Layout";
-import { theme } from "../../theme";
 import { NavBar } from "../../components/NavBar";
 import { makeQuery } from "../../services/queries";
 import { Item } from "../../components/Item";
 import { ListPlusIcon } from "../../Layout/icons";
 import { ESubtitle } from "../../Layout/text";
+import { NewCategory } from "./NewCategory";
+import { EditCategory } from "./EditCategory";
 
 export function Categories() {
-    const { db } = useContext(AuthContext);
-
-    const [openProductModal, setOpenProductModal] = useState<boolean>(false)
-    const [openEditProductModal, setOpenEditProductModal] = useState<boolean>(false)
-    const [editProductModalId, setEditProductModalId] = useState<string>()
-
-    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [openCreateModal, setOpenCreateModal] = useState<boolean>(false)
+    const [editModal, setEditModal] = useState<boolean>(false)
+    const [editId, setEditId] = useState<string>()
 
     const handleOpenEditCategoryModal = (id: string) => {
-        setEditProductModalId(id)
-        setOpenEditProductModal(true)
+        setEditId(id)
+        setEditModal(true)
     }
 
     //QUERY
@@ -33,12 +29,11 @@ export function Categories() {
             <NormalPageContainer>
                 <FlexRow style={{ alignItems: 'flex-end', justifyContent: 'space-between' }}>
                     <ESubtitle>Categorias</ESubtitle>
-                    <ListPlusIcon onClick={() => setOpenProductModal(true)} />
+                    <ListPlusIcon onClick={() => setOpenCreateModal(true)} />
                 </FlexRow>
                 <DividerHorizontal />
                 <FlexCol style={{ width: "100%", rowGap: "8px" }}>
-
-                    <FlexRow>
+                    <FlexRow style={{ flexWrap: 'wrap', gap: '16px' }}>
                         {categories?.map((item: any, index: any) =>
                             <Item
                                 key={index}
@@ -49,13 +44,14 @@ export function Categories() {
                                 categories={item.categories}
                                 prices={item.prices}
                                 onClick={() => handleOpenEditCategoryModal(item.id)}
+                                color={item.color}
                             />
                         )}
                     </FlexRow>
-                    <DividerHorizontal style={{ backgroundColor: theme.color.greyLight }} />
-
                 </FlexCol>
             </NormalPageContainer>
+            <NewCategory open={openCreateModal} onClose={() => setOpenCreateModal(false)} />
+            <EditCategory id={editId} open={editModal} onClose={() => setEditModal(false)} />
         </>
 
     );

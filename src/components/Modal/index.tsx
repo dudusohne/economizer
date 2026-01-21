@@ -9,7 +9,7 @@ import { FlexCol, FlexRow } from '../../Layout';
 export function EcoModal({ open, onClose, children, title, subtitle }: any) {
     return (
         <Dialog open={open} onClose={onClose}>
-            <FlexRow style={{ alignItems: 'center', justifyContent: 'space-between', padding: '30px', overflow: 'hidden' }}>
+            <FlexRow style={{ alignItems: 'center', justifyContent: 'space-between', padding: '20px 20px 10px 20px', overflow: 'hidden' }}>
                 <FlexCol style={{ justifyContent: 'center'}}>
                     <ModalTitle>{title}</ModalTitle>
                     <DialogContentText>{subtitle}</DialogContentText>
@@ -18,7 +18,7 @@ export function EcoModal({ open, onClose, children, title, subtitle }: any) {
                     <ModalCloseIcon onClick={onClose} />
                 </DialogActions>
             </FlexRow>
-            <DialogContent style={{ overflow: 'hidden', padding: '0px 30px 30px 30px' }}>
+            <DialogContent style={{ overflow: 'hidden', padding: '0px 20px 20px 20px' }}>
                 {children}
             </DialogContent>
         </Dialog>

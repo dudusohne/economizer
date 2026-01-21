@@ -40,7 +40,7 @@ export class Endpoints {
     updateDoc(doc(db, "lists", id), list)
 
   updateCategory = (db: Firestore, id: string, category: any) =>
-    updateDoc(doc(db, "categories"), category)
+    updateDoc(doc(db, "categories", id), category)
 
   //DELETE methods
   deleteProduct = (db: Firestore, id: string) => 

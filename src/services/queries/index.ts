@@ -1,8 +1,12 @@
-import { useQuery } from "react-query"
+import { useQuery, UseQueryOptions } from "react-query"
 
 import { endpoints } from "../endpoints";
 import { GetFireBaseAdmin } from "../firebase";
 import { toast } from "react-toastify";
+
+type Category = {
+    id: string;
+};
 
 export const makeQuery = () => {
     const { db } = GetFireBaseAdmin();
@@ -66,23 +70,31 @@ export const makeQuery = () => {
         return { categories, error }
     }
 
-    function useGetCategoryById(id: string) {
-        const { data: categoryById, error } = useQuery(['get-category-by-id', id], async () => {
-            try {
-                const querySnapshot = await endpoints.getCategoryById(db, id ?? '');
-                if (querySnapshot.exists()) {
-                    const data = querySnapshot.data();
-                    data.id = querySnapshot.id;
-                    return data;
-                }
-            } catch (error: any) {
-                toast.error('Error fetching category:', error);
-                throw error;
-            }
-        });
+    function useGetCategoryById(
+        id: string,
+        options?: UseQueryOptions<Category>
+    ) {
+        return useQuery<Category>(
+            ['get-category-by-id', id],
+            async () => {
+                const querySnapshot = await endpoints.getCategoryById(db, id);
 
-        return { categoryById, error }
+                if (!querySnapshot.exists()) {
+                    throw new Error('Category not found');
+                }
+
+                return {
+                    id: querySnapshot.id,
+                    ...querySnapshot.data(),
+                } as Category;
+            },
+            {
+                enabled: !!id,
+                ...options,
+            }
+        );
     }
+
 
     return {
         useGetLists,

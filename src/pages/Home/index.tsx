@@ -6,7 +6,6 @@ import { ESubtitle } from '../../Layout/text';
 import { ListCard } from '../../components/ListCard';
 import { NavBar } from '../../components/NavBar';
 import { ListPlusIcon } from "../../Layout/icons";
-import { NewList } from './NewList';
 import { makeQuery } from '../../services/queries';
 import { ListType } from '../../types';
 import { useMutation } from 'react-query';
@@ -16,6 +15,7 @@ import { toast } from 'react-toastify';
 import { queryClient } from '../../services/queryClient';
 
 import emptyListImage from '../../assets/list-icon.png'
+import { NewList } from '../List/NewList';
 
 export function Home() {
     const [openNewListModal, setOpenNewListModal] = useState<boolean>(false)

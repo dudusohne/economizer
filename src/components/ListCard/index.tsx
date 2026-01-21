@@ -26,7 +26,7 @@ export function ListCard({ title, items, date, sum, onClick, onEdit, onDelete }:
         <ListCardContainer onClick={!optionsOpen && onClick} optionsOpen={optionsOpen}>
             <FlexCol style={{ rowGap: '8px', alignItems: 'space-between' }}>
                 <ETitle style={{ color: `${theme.color.secondary}` }}>{title !== '' ? title : '-'}</ETitle>
-                <ESubtitle>{items} itens</ESubtitle>
+                <ESubtitle>{items} {items > 1 ? 'items' : 'item'}</ESubtitle>
             </FlexCol>
             {!optionsOpen ?
                 <FlexRow style={{ gap: '24px', alignItems: 'center' }}>

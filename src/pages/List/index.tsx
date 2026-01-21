@@ -2,7 +2,6 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useMediaQuery from "@mui/material/useMediaQuery";
-// import { CiSearch } from "react-icons/ci";
 
 import { EcoButton } from "../../components/EcoButton";
 import { AuthContext } from "../../context/AuthContext";
@@ -15,7 +14,6 @@ import { ItemToCheck } from "../../components/ItemToCheck";
 import { makeQuery } from "../../services/queries";
 import { ListType, ProductType } from "../../types";
 import { queryClient } from "../../services/queryClient";
-// import { Input, InputAdornment } from "@mui/material";
 
 export function List() {
     const { db } = useContext(AuthContext)

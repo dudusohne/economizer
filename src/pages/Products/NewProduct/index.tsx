@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import TextField from "@mui/material/TextField";
-import { GiFrozenOrb, GiFruitBowl, GiSlicedBread } from "react-icons/gi";
-import { FaBottleWater } from "react-icons/fa6";
-import { MdBathroom, MdOutlineCleaningServices } from "react-icons/md";
 
 import { EcoModal } from "../../../components/Modal";
-import { DividerHorizontal, FlexCol, FlexRow } from "../../../Layout";
+import { DividerHorizontal, FlexCol } from "../../../Layout";
 import { theme } from "../../../theme";
-import { ButtonIconWrapper } from "./styles";
 import { EBodyText } from "../../../Layout/text";
 import { EcoButton } from "../../../components/EcoButton";
 import { ProductType } from "../../../types";
-import useProducts from "../../../hooks/useProducts";
+import { makeQuery } from "../../../services/queries";
+import { CategoryToCheck } from "../../Categories/CategoryToCheck";
+import { endpoints } from "../../../services/endpoints";
+import { AuthContext } from "../../../context/AuthContext";
+import { toast } from "react-toastify";
+import { queryClient } from "../../../services/queryClient";
 
 interface NewProductProps {
     open: boolean;
@@ -19,134 +20,105 @@ interface NewProductProps {
 }
 
 export function NewProduct({ open, onClose }: NewProductProps) {
+    const { db } = useContext(AuthContext)
+
     const [formState, setFormState] = useState<ProductType>({
         name: '',
-        categories: []
+        prices: [],
+        categories: [] as any[],
     });
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-     
+    const handleChange = (category: any) => {
+        setFormState((prev) => {
+            const alreadySelected = prev.categories.some(
+                (cat: any) => cat?.id === category.id
+            );
+
+            return {
+                ...prev,
+                categories: alreadySelected
+                    ? prev.categories.filter((cat: any) => cat?.id !== category.id)
+                    : [...prev.categories, category],
+            };
+        });
     };
 
     //CREATE "PRODUCTS"
-    const { handleAddProduct } = useProducts()
+    const handleAddProduct = async (formState: any) => {
+        const product = {
+            name: formState.name,
+            prices: formState.prices ?? [],
+            categories: formState.categories ?? []
+        }
+
+        try {
+            await endpoints.addProduct(db, product)
+            toast.success('New Product saved!')
+            queryClient.invalidateQueries('get-products')
+            onClose()
+            setFormState({
+                name: '',
+                prices: [],
+                categories: [] as any[],
+            })
+        } catch (err) {
+            toast.error('Product not saved, please try again')
+        }
+    }
+
+    const handleClose = () => {
+        setFormState({
+            name: '',
+            prices: [],
+            categories: [] as any[],
+        })
+        onClose()
+    }
+
+    //QUERY
+    const { useGetCategories } = makeQuery()
+
+    const { categories } = useGetCategories()
 
     return (
-        <EcoModal open={open} onClose={onClose} title="New Product" subtitle="register a new product">
-            <FlexCol style={{ width: '100%', rowGap: '8px', overflowX: 'hidden' }}>
+        <EcoModal open={open} onClose={handleClose} title="New Product" subtitle="register a new product">
+            <FlexCol style={{ width: '100%', rowGap: '8px' }}>
                 <TextField id="filled-basic" label="Name*" variant="filled"
                     onChange={(e) => {
                         setFormState({
                             ...formState,
                             name: e.target.value
                         })
-                    }} />
+                    }}
+                />
                 <TextField id="filled-basic" label="Price (R$)" variant="filled"
                     onChange={(e) => {
                         setFormState({
                             ...formState,
                             prices: [e.target.value]
                         })
-                    }} />
-                <EBodyText>Choose an icon:</EBodyText>
-                <FlexRow style={{ columnGap: '8px', overflowX: 'auto', paddingBottom: '8px' }}>
-                    <ButtonIconWrapper active={formState.iconName === 'bread'}>
-                        <GiSlicedBread fontSize={30} color={theme.color.secondary}
-                            onClick={() => setFormState({
-                                ...formState,
-                                iconName: 'bread'
-                            })} />
-                    </ButtonIconWrapper>
-                    <ButtonIconWrapper active={formState.iconName === 'bottle'}>
-                        <FaBottleWater fontSize={30} color={theme.color.secondary}
-                            onClick={() => setFormState({
-                                ...formState,
-                                iconName: 'bottle'
-                            })} />
-                    </ButtonIconWrapper>
-                    <ButtonIconWrapper active={formState.iconName === 'fruit'}>
-                        <GiFruitBowl fontSize={30} color={theme.color.secondary}
-                            onClick={() => setFormState({
-                                ...formState,
-                                iconName: 'fruit'
-                            })} />
-                    </ButtonIconWrapper>
-                    <ButtonIconWrapper active={formState.iconName === 'frozen'}>
-                        <GiFrozenOrb fontSize={30} color={theme.color.secondary}
-                            onClick={() => setFormState({
-                                ...formState,
-                                iconName: 'frozen'
-                            })} />
-                    </ButtonIconWrapper>
-                    <ButtonIconWrapper active={formState.iconName === 'cleaning'}>
-                        <MdOutlineCleaningServices fontSize={30} color={theme.color.secondary}
-                            onClick={() => setFormState({
-                                ...formState,
-                                iconName: 'cleaning'
-                            })} />
-                    </ButtonIconWrapper>
-                    <ButtonIconWrapper active={formState.iconName === 'bathroom'}>
-                        <MdBathroom fontSize={30} color={theme.color.secondary}
-                            onClick={() => setFormState({
-                                ...formState,
-                                iconName: 'bathroom'
-                            })} />
-                    </ButtonIconWrapper>
-                </FlexRow>
-                <DividerHorizontal style={{ margin: '0', backgroundColor: `${theme.color.greyLight}` }} />
-                {/* <FormControl component="fieldset" variant="standard">
-                    <EBodyText>Categories:</EBodyText>
-                    <FlexRow>
-                        <FormGroup>
-                            <FormControlLabel
-                                control={<Checkbox
-                                    checked={meat}
-                                    onChange={handleChange}
-                                    name="meat" />}
-                                label="meat"
-                            />
-                            <FormControlLabel
-                                control={<Checkbox
-                                    checked={drink}
-                                    onChange={handleChange}
-                                    name="drink" />}
-                                label="drink"
-                            />
-                            <FormControlLabel
-                                control={<Checkbox
-                                    checked={fruit}
-                                    onChange={handleChange}
-                                    name="fruit" />}
-                                label="fruit"
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <FormControlLabel
-                                control={<Checkbox
-                                    checked={frozen}
-                                    onChange={handleChange}
-                                    name="frozen" />}
-                                label="frozen"
-                            />
-                            <FormControlLabel
-                                control={<Checkbox
-                                    checked={cleaning}
-                                    onChange={handleChange}
-                                    name="cleaning" />}
-                                label="cleaning"
-                            />
-                            <FormControlLabel
-                                control={<Checkbox
-                                    checked={bathroom}
-                                    onChange={handleChange}
-                                    name="bathroom" />}
-                                label="bathroom"
-                            />
-                        </FormGroup>
-                    </FlexRow>
-                </FormControl> */}
-                <EcoButton onClick={handleAddProduct} disabled={formState?.name && formState?.name?.length < 1}>
-                    CREATE
+                    }}
+                />
+
+                <EBodyText style={{ marginTop: '6px' }}>Choose an category:</EBodyText>
+
+                {categories?.map((item: any) => (
+                    <CategoryToCheck
+                        key={item.id}
+                        name={item.name}
+                        iconName={item.iconName}
+                        checked={formState.categories.includes(item)}
+                        onChangeCheckbox={() => handleChange(item)}
+                    />
+                ))}
+
+                <DividerHorizontal style={{ marginTop: '8px', backgroundColor: `${theme.color.greyLight}` }} />
+
+                <EcoButton
+                    onClick={() => handleAddProduct(formState)}
+                    disabled={formState?.name && formState?.name?.length < 1 || !formState?.name}
+                >
+                    CREATE PRODUCT
                 </EcoButton>
             </FlexCol>
         </EcoModal>
