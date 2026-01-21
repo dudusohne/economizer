@@ -57,7 +57,7 @@ export function EditCategory({ open, onClose, id }: EditProductProps) {
                 toast.success('Category updated!')
                 setFormState({
                     description: '',
-                    icon: '',
+                    iconName: '',
                     color: '',
                 })
                 queryClient.invalidateQueries('get-categories')
@@ -99,7 +99,7 @@ export function EditCategory({ open, onClose, id }: EditProductProps) {
                                 marginTop: '4px'
                             }}
                         >
-                            {Object.entries(icons).map(([key, icon]) => (
+                            {Object.entries(icons).map(([key, Icon]) => (
                                 <Box
                                     key={key}
                                     onClick={() =>
@@ -114,16 +114,16 @@ export function EditCategory({ open, onClose, id }: EditProductProps) {
                                                 ? '2px solid #1976d2'
                                                 : '2px solid transparent',
                                         backgroundColor:
-                                            formState.iconName === key ? 'rgba(25, 118, 210, 0.1)' : 'transparent',
+                                            formState.iconName === key
+                                                ? 'rgba(25, 118, 210, 0.1)'
+                                                : 'transparent',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                     }}
+
                                 >
-                                    {renderIcon({
-                                        size: 30,
-                                        color: theme.color.secondary,
-                                    })}
+                                    <Icon size={28} color={theme.color.secondary} />
                                 </Box>
                             ))}
                         </Box>
