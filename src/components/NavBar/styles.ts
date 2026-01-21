@@ -15,11 +15,11 @@ export const NavBarButton = styled.button<{active: boolean}>`
     color: ${(props) => props.active ? props.theme.color.fourth : props.theme.color.primary};
     background-color: ${(props) => props.active ? props.theme.color.tertiary : props.theme.color.secondary};
     border-radius: 8px;
-    width: 60px;
+    padding: 4px 4px 4px 4px;
+    height: fit-content;
 
     &:hover {
         cursor: pointer;
-        border: 1px solid ${(props) => props.theme.color.primary};
         background-color: ${(props) => props.theme.color.tertiary};
         color: ${(props) => props.theme.color.fourth};
     }

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 export type ProductType = {
-    id?: number;
+    id?: string;
     name?: string;
     prices?: string[];
     icon?: ReactNode;

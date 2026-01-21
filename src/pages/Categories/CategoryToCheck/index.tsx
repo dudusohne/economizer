@@ -1,8 +1,9 @@
 import Checkbox from '@mui/material/Checkbox';
 
 import { CategoryToCheckContainer, EItemSubtitle } from './styles';
-import { icons } from '../../../utils/icons';
+import { renderIcon } from '../../../utils/icons';
 import { FlexRow } from '../../../Layout';
+import { theme } from '../../../theme';
 
 interface CategoryToCheckProps {
     name: string
@@ -12,11 +13,6 @@ interface CategoryToCheckProps {
 }
 
 export function CategoryToCheck({ name, iconName, onChangeCheckbox, checked }: CategoryToCheckProps) {
-
-    const handleIconRender = (iconName: any) => {
-        return icons[iconName];
-    }
-
     return (
         <CategoryToCheckContainer onClick={onChangeCheckbox}>
             <FlexRow style={{ gap: '8px', alignItems: 'center' }}>
@@ -30,7 +26,11 @@ export function CategoryToCheck({ name, iconName, onChangeCheckbox, checked }: C
                 <EItemSubtitle>{name}</EItemSubtitle>
             </FlexRow>
 
-            {handleIconRender(iconName)}
+            {renderIcon({
+                name: iconName,
+                size: 30,
+                color: theme.color.secondary,
+            })}
         </CategoryToCheckContainer>
     )
 }

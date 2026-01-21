@@ -23,25 +23,25 @@ export function NewProduct({ open, onClose }: NewProductProps) {
     const { db } = useContext(AuthContext)
 
     const [formState, setFormState] = useState<ProductType>({
+        id: '',
         name: '',
         prices: [],
-        categories: [] as any[],
+        categories: [] as string[],
     });
 
-    const handleChange = (category: any) => {
+    const handleChange = (categoryId: string) => {
         setFormState((prev) => {
-            const alreadySelected = prev.categories.some(
-                (cat: any) => cat?.id === category.id
-            );
+            const alreadySelected = prev.categories.includes(categoryId);
 
             return {
                 ...prev,
                 categories: alreadySelected
-                    ? prev.categories.filter((cat: any) => cat?.id !== category.id)
-                    : [...prev.categories, category],
+                    ? prev.categories.filter((id) => id !== categoryId)
+                    : [...prev.categories, categoryId],
             };
         });
     };
+
 
     //CREATE "PRODUCTS"
     const handleAddProduct = async (formState: any) => {
@@ -80,6 +80,8 @@ export function NewProduct({ open, onClose }: NewProductProps) {
 
     const { categories } = useGetCategories()
 
+    console.log(formState.categories)
+
     return (
         <EcoModal open={open} onClose={handleClose} title="New Product" subtitle="register a new product">
             <FlexCol style={{ width: '100%', rowGap: '8px' }}>
@@ -107,10 +109,11 @@ export function NewProduct({ open, onClose }: NewProductProps) {
                         key={item.id}
                         name={item.name}
                         iconName={item.iconName}
-                        checked={formState.categories.includes(item)}
-                        onChangeCheckbox={() => handleChange(item)}
+                        checked={formState.categories.includes(item.id)}
+                        onChangeCheckbox={() => handleChange(item.id)}
                     />
                 ))}
+
 
                 <DividerHorizontal style={{ marginTop: '8px', backgroundColor: `${theme.color.greyLight}` }} />
 

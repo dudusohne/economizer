@@ -7,6 +7,7 @@ import { EconomizerIcon, EconomizerText } from "../../Layout/text";
 import { FlexRow } from "../../Layout";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { useMediaQuery } from "@mui/material";
 
 export function NavBar() {
     const navigate = useNavigate()
@@ -18,21 +19,23 @@ export function NavBar() {
         if (!user) navigate('/login')
     }, [user, pathname])
 
+    const minimalResponsivity = useMediaQuery('(min-width:321px)')
+
     return (
         <NavBarContainer>
             <FlexRow style={{ alignItems: 'center' }}>
                 <EconomizerIcon />
                 <EconomizerText>economizer</EconomizerText>
             </FlexRow>
-            <FlexRow style={{ columnGap: '16px' }}>
+            <FlexRow style={{ columnGap: '16px', alignItems: 'center' }}>
                 <NavBarButton onClick={() => navigate('/')} active={pathname === '/'}>
-                    <MdHome fontSize={30} />
+                    <MdHome fontSize={minimalResponsivity ? 30 : 25} />
                 </NavBarButton>
                 <NavBarButton onClick={() => navigate('/products')} active={pathname === '/products'}>
-                    <GiSlicedBread fontSize={30} />
+                    <GiSlicedBread fontSize={minimalResponsivity ? 30 : 25} />
                 </NavBarButton>
                 <NavBarButton onClick={() => navigate('/settings')} active={pathname === '/settings'}>
-                    <GiSettingsKnobs fontSize={30} />
+                    <GiSettingsKnobs fontSize={minimalResponsivity ? 30 : 25} />
                 </NavBarButton>
             </FlexRow>
         </NavBarContainer>

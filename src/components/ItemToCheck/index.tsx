@@ -1,17 +1,13 @@
 import Checkbox from '@mui/material/Checkbox';
 
 import { ProductType } from '../../types';
-import { icons } from '../../utils/icons';
+import { renderIcon } from '../../utils/icons';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { EItemSubtitle, ItemToCheckContainer } from './styles';
 import { FlexRow } from '../../Layout';
+import { theme } from '../../theme';
 
 export function ItemToCheck({ name, prices, iconName, categories, onChangeCheckbox, checked }: ProductType) {
-
-    const handleIconRender = (iconName: any) => {
-        return icons[iconName];
-    }
-
     const handleOpenOptions = (event: any) => {
         event.stopPropagation();
     }
@@ -20,7 +16,11 @@ export function ItemToCheck({ name, prices, iconName, categories, onChangeCheckb
         <>
             <ItemToCheckContainer>
                 <FlexRow style={{ gap: '16px', alignItems: 'center' }}>
-                    {handleIconRender(iconName)}
+                    {renderIcon({
+                        name: iconName,
+                        size: 30,
+                        color: theme.color.secondary,
+                    })}
                     <EItemSubtitle>{name}</EItemSubtitle>
                 </FlexRow>
                 <FlexRow style={{ gap: '32px', alignItems: 'center' }}>

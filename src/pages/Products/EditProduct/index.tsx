@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import TextField from "@mui/material/TextField";
 import { toast } from "react-toastify";
 import { MdDeleteForever } from "react-icons/md";
@@ -25,21 +25,30 @@ export function EditProduct({ open, onClose, productId }: EditProductProps) {
     const { db } = useContext(AuthContext);
 
     const [formState, setFormState] = useState<ProductType>({
-        name: "",
+        id: '',
+        name: '',
         prices: [],
-        iconName: "",
+        iconName: '',
         categories: []
     });
 
-    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
-    const { data: product } = useQuery(
+    useQuery(
         ["get-product-by-id", productId],
         async () => {
             const docSnap = await endpoints.getProductById(db, productId);
             return docSnap.data() as ProductType;
         },
-        { enabled: !!productId && open }
+        {
+            enabled: !!productId && open,
+            onSuccess: (data) => {
+                setFormState({
+                    name: data.name,
+                    prices: data.prices,
+                    iconName: data.iconName,
+                    categories: data.categories || []
+                });
+            }
+        }
     );
 
     const { data: categories } = useQuery(
@@ -54,54 +63,39 @@ export function EditProduct({ open, onClose, productId }: EditProductProps) {
         { enabled: open }
     );
 
-    useEffect(() => {
-        if (!product) return;
-
-        setFormState({
-            name: product.name,
-            prices: product.prices,
-            iconName: product.iconName,
-            categories: product.categories || []
-        });
-
-        setSelectedCategories(product.categories || []);
-    }, [product]);
-
     const handleChange = (category: any) => {
         setFormState((prev) => {
-            const alreadySelected = prev.categories.some(
-                (cat: any) => cat?.id === category.id
-            );
+            const categoryId = category.id;
+
+            const alreadySelected = prev.categories.includes(categoryId);
 
             return {
                 ...prev,
                 categories: alreadySelected
-                    ? prev.categories.filter((cat: any) => cat?.id !== category.id)
-                    : [...prev.categories, category],
+                    ? prev.categories.filter((id: string) => id !== categoryId)
+                    : [...prev.categories, categoryId],
             };
         });
     };
 
     const handleUpdateProduct = async () => {
+        const normalizedCategories = (formState.categories || []).map((cat: any) =>
+            typeof cat === "string" ? cat : cat.id
+        );
+
         const updatedProduct: ProductType = {
             name: formState.name,
             prices: formState.prices,
-            iconName: formState.iconName,
-            categories: formState.categories
+            categories: normalizedCategories,
         };
 
         try {
             await endpoints.updateProduct(db, productId, updatedProduct);
             toast.success("Product updated successfully!");
             queryClient.invalidateQueries("get-products");
-            setFormState({
-                name: "",
-                prices: [],
-                iconName: "",
-                categories: []
-            })
             onClose();
-        } catch {
+        } catch (error) {
+            console.error(error);
             toast.error("Product not updated, please try again");
         }
     };
@@ -145,9 +139,7 @@ export function EditProduct({ open, onClose, productId }: EditProductProps) {
                         key={item.id}
                         name={item.name}
                         iconName={item.iconName}
-                        checked={formState.categories.some(
-                            (category: any) => category.id === item.id
-                        )}
+                        checked={formState.categories.includes(item.id)}
                         onChangeCheckbox={() => handleChange(item)}
                     />
                 ))}

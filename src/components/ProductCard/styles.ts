@@ -36,7 +36,9 @@ export const ItemTitle = styled.span`
 
 export const CategoryWrapper = styled.div`
     display: flex;
-    padding: 2px 6px;
+    flex-direction: row;
+    align-items: center;
+    padding: 4px 8px;
     border-radius: 8px;
     font-size: 12px;
     width: fit-content;
@@ -44,6 +46,7 @@ export const CategoryWrapper = styled.div`
     color: ${(props) => props.theme.color.primary};
     border: 1px solid ${(props) => props.theme.color.primary};
     letter-spacing: 1.2px;
+    gap: 8px;
 `
 
 export const CategoriesPositioner = styled.div`

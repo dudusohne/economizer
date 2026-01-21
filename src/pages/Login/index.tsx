@@ -8,13 +8,15 @@ import { LoginContainer } from "./styles"
 import { DividerHorizontal, FlexRow } from "../../Layout"
 import { ESubtitle, EconomizerIconBig, EconomizerText } from "../../Layout/text"
 import { theme } from "../../theme"
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Loader } from "../../components/Loader"
+import { AuthContext } from "../../context/AuthContext"
 
 export function Login() {
     const [loading, setLoading] = useState<boolean>(false)
-    const { auth, db } = GetFireBaseAdmin()
 
+    const { auth, db } = GetFireBaseAdmin()
+    const { user, loading: loadingAuth } = useContext(AuthContext);
     const navigate = useNavigate()
 
     const handleSignInWithGoogle = async () => {
@@ -29,6 +31,12 @@ export function Login() {
             toast.error('Recarregue a página e tente novamente!')
         }
     };
+
+    useEffect(() => {
+        if (!loadingAuth && user) {
+            navigate('/');
+        }
+    }, [user, loadingAuth]);
 
     return (
         <LoginContainer>

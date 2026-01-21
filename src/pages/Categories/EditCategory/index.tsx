@@ -10,8 +10,9 @@ import { AuthContext } from "../../../context/AuthContext";
 import { EcoButton } from "../../../components/EcoButton";
 import { queryClient } from "../../../services/queryClient";
 import { CategoryType } from "../../../types";
-import { categoryColor, icons } from "../../../utils/icons";
+import { categoryColor, icons, renderIcon } from "../../../utils/icons";
 import { makeQuery } from "../../../services/queries";
+import { theme } from "../../../theme";
 
 interface EditProductProps {
     open: boolean;
@@ -119,7 +120,10 @@ export function EditCategory({ open, onClose, id }: EditProductProps) {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    {icon}
+                                    {renderIcon({
+                                        size: 30,
+                                        color: theme.color.secondary,
+                                    })}
                                 </Box>
                             ))}
                         </Box>

@@ -11,6 +11,7 @@ import { EcoButton } from "../../../components/EcoButton";
 import { queryClient } from "../../../services/queryClient";
 import { CategoryType } from "../../../types";
 import { categoryColor, icons } from "../../../utils/icons";
+import { theme } from "../../../theme";
 
 interface NewProductProps {
     open: boolean;
@@ -74,7 +75,7 @@ export function NewCategory({ open, onClose }: NewProductProps) {
                             marginTop: '4px'
                         }}
                     >
-                        {Object.entries(icons).map(([key, icon]) => (
+                        {Object.entries(icons).map(([key, Icon]) => (
                             <Box
                                 key={key}
                                 onClick={() =>
@@ -89,15 +90,18 @@ export function NewCategory({ open, onClose }: NewProductProps) {
                                             ? '2px solid #1976d2'
                                             : '2px solid transparent',
                                     backgroundColor:
-                                        formState.icon === key ? 'rgba(25, 118, 210, 0.1)' : 'transparent',
+                                        formState.icon === key
+                                            ? 'rgba(25, 118, 210, 0.1)'
+                                            : 'transparent',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                 }}
                             >
-                                {icon}
+                                <Icon size={28} color={theme.color.secondary} />
                             </Box>
                         ))}
+
                     </Box>
                 </Box>
 
