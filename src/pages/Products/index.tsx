@@ -11,9 +11,12 @@ import { endpoints } from "../../services/endpoints.ts";
 import { AuthContext } from "../../context/AuthContext.tsx";
 import { ProductRecursiveWrapper } from "./styles.ts";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { EditProduct } from "./EditProduct/index.tsx";
 
 export function Products() {
     const [openProductModal, setOpenProductModal] = useState<boolean>(false)
+    const [openEditProductModal, setOpenEditProductModal] = useState<boolean>(false)
+    const [editProductModalId, setEditProductModalId] = useState<string>()
 
     const { db } = useContext(AuthContext)
 
@@ -56,6 +59,11 @@ export function Products() {
         [window.innerHeight, doesntMatchesMobile, doesntMatchesNotebook]
     )
 
+    const handleOpenEditProductModal = (id: string) => {
+        setEditProductModalId(id)
+        setOpenEditProductModal(true)
+    }
+
     return (
         <>
             <NavBar />
@@ -74,11 +82,24 @@ export function Products() {
                             iconName={item.iconName}
                             icon={item.icon}
                             categories={item.categories}
-                            prices={item.prices} />
+                            prices={item.prices}
+                            onClick={() => handleOpenEditProductModal(item.id)}
+                        />
                     )}
                 </ProductRecursiveWrapper>
             </NormalPageContainer>
-            <NewProduct open={openProductModal} onClose={() => setOpenProductModal(false)} />
+            <NewProduct
+                open={openProductModal}
+                onClose={() => setOpenProductModal(false)}
+            />
+            <EditProduct
+                open={openEditProductModal}
+                onClose={() => {
+                    setOpenEditProductModal(false)
+                    setEditProductModalId('')
+                }}
+                productId={editProductModalId?.toString() ?? ''}
+            />
         </>
     )
 }

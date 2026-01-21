@@ -7,6 +7,7 @@ export const theme = {
     fifth: '#59114D',
 
     greyLight: '#e4e4e4',
+    greyLighter: '#c4c4c4',
     greyDark: '#aeaeae',
     greyDarker: '#1C1C1C',
 

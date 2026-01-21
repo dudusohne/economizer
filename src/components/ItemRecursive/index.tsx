@@ -5,13 +5,11 @@ import { ProductType } from '../../types';
 import { icons } from '../../utils/icons';
 import { CategoriesPositioner, CategoryWrapper, ItemRecursiveContainer } from './styles';
 
-export function ItemRecursive({ name, prices, iconName, categories, onChangeCheckbox, checked }: ProductType) {
+export function ItemRecursive({ name, iconName, categories, onChangeCheckbox, checked }: ProductType) {
 
     const handleIconRender = (iconName: any) => {
         return icons[iconName];
     }
-
-    const trueKeys = Object.keys(categories).filter(key => categories[key]);
 
     return (
         <>
@@ -24,9 +22,9 @@ export function ItemRecursive({ name, prices, iconName, categories, onChangeChec
                     name={iconName}
                 />
             </ItemRecursiveContainer>
-            {trueKeys &&
+            {categories?.length &&
                 <CategoriesPositioner>
-                    {trueKeys?.map((category: any, index: number) =>
+                    {categories?.map((category: any, index: number) =>
                         <CategoryWrapper key={index}>{category}</CategoryWrapper>
                     )}
                 </CategoriesPositioner>

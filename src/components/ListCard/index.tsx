@@ -5,7 +5,7 @@ import { FaEdit } from "react-icons/fa";
 import { BsBackspaceReverseFill } from "react-icons/bs";
 
 import { FlexCol, FlexRow } from "../../Layout";
-import { ESubtitle, ETitle } from "../../Layout/text";
+import { EBodyText, ESubtitle, ETitle } from "../../Layout/text";
 import { ListCardContainer } from "./styles";
 import { theme } from "../../theme";
 
@@ -23,24 +23,31 @@ export function ListCard({ title, items, date, sum, onClick, onEdit, onDelete }:
     }
 
     return (
-        <ListCardContainer onClick={onClick}>
-            <FlexCol style={{ rowGap: '8px' }}>
-                <ETitle>{title}</ETitle>
+        <ListCardContainer onClick={!optionsOpen && onClick} optionsOpen={optionsOpen}>
+            <FlexCol style={{ rowGap: '8px', alignItems: 'space-between' }}>
+                <ETitle>{title !== '' ? title : '-'}</ETitle>
                 <ESubtitle>{items} itens</ESubtitle>
             </FlexCol>
             {!optionsOpen ?
-                <>
-                    <FlexCol style={{ alignItems: 'flex-end', rowGap: '8px' }}>
-                        <ESubtitle>{date}</ESubtitle>
-                        <ETitle>R$ {sum}</ETitle>
+                <FlexRow style={{ gap: '24px', alignItems: 'center' }}>
+                    <FlexCol style={{ alignItems: 'flex-start', rowGap: '8px' }}>
+                        <EBodyText>Criado em</EBodyText>
+                        <ETitle>{date}</ETitle>
                     </FlexCol>
-                    <BsThreeDotsVertical fontSize={36} onClick={(e: any) => handleOpenOptions(e)} />
-                </>
+
+                    <FlexRow style={{ gap: '16px', alignItems: 'center' }}>
+                        <FlexCol style={{ alignItems: 'flex-start', rowGap: '8px' }}>
+                            <EBodyText>Total</EBodyText>
+                            <ETitle>R$ {sum}</ETitle>
+                        </FlexCol>
+                        <BsThreeDotsVertical fontSize={36} onClick={(e: any) => handleOpenOptions(e)} />
+                    </FlexRow>
+                </FlexRow>
                 :
-                <FlexRow style={{ width: '100%', columnGap: '36px', alignItems: 'center' }} onClick={(e) => e.stopPropagation()}>
+                <FlexRow style={{ gap: '36px', alignItems: 'center' }} onClick={(e) => e.stopPropagation()}>
                     <BsBackspaceReverseFill fontSize={42} color={theme.color.greyDark} onClick={(e: any) => handleCloseOptions(e)} />
                     <FaEdit fontSize={42} color={theme.color.green} onClick={onEdit} />
-                    <MdDeleteForever fontSize={44} color={theme.color.red} onClick={onDelete} />
+                    <MdDeleteForever fontSize={42} color={theme.color.red} onClick={onDelete} />
                 </FlexRow>
             }
         </ListCardContainer>

@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { MdHome } from "react-icons/md";
-import { GiSlicedBread } from "react-icons/gi";
+import { GiSettingsKnobs, GiSlicedBread } from "react-icons/gi";
 
 import { NavBarButton, NavBarContainer } from "./styles";
 import { EconomizerIcon, EconomizerText } from "../../Layout/text";
@@ -30,6 +30,9 @@ export function NavBar() {
                 </NavBarButton>
                 <NavBarButton onClick={() => navigate('/products')} active={pathname === '/products'}>
                     <GiSlicedBread fontSize={30} />
+                </NavBarButton>
+                <NavBarButton onClick={() => navigate('/settings')} active={pathname === '/settings'}>
+                    <GiSettingsKnobs fontSize={30} />
                 </NavBarButton>
             </FlexRow>
         </NavBarContainer>

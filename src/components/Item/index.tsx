@@ -3,17 +3,17 @@ import { ProductType } from '../../types/index';
 import { icons } from '../../utils/icons';
 import { CategoriesPositioner, CategoryWrapper, ItemContainer, ItemTitle } from './styles';
 
-export function Item({ name, prices, iconName, categories }: ProductType) {
+export function Item({ name, prices, iconName, categories, onClick }: ProductType) {
 
     const handleIconRender = (iconName: any) => {
         return icons[iconName];
     }
 
-    const trueKeys = Object.keys(categories).filter(key => categories[key]);
+    const trueKeys = categories ? Object.keys(categories).filter(key => categories[key]) : null
 
     return (
         <>
-            <ItemContainer>
+            <ItemContainer onClick={onClick}>
                 {handleIconRender(iconName)}
                 <ItemTitle>{name}</ItemTitle>
                 <ESubtitle>{prices && prices?.length > 0 && `R$ ${prices[prices?.length - 1]}`}</ESubtitle>

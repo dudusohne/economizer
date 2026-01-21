@@ -107,16 +107,6 @@ export function List() {
                         <ETitle>{list?.description}</ETitle>
                         <ETitle>{list?.date}</ETitle>
                     </FlexRow>
-                    {/* <Input
-                        id="input-with-icon-adornment"
-                        placeholder="search"
-                        onChange={(e: any) => setSearch(e.target.value)}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <CiSearch />
-                            </InputAdornment>
-                        }
-                    /> */}
                 </FlexCol>
                 <ListRecursiveWrapper height={handleScreenHeight(window.innerHeight)}>
                     {items?.map((products: ProductType, index: number) =>

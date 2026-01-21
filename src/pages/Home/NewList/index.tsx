@@ -70,11 +70,15 @@ export function NewList({ open, onClose }: NewProductProps) {
             sum: summFormatted
         }
         try {
-            await endpoints.addList(db, product)
-            toast.success('New List saved!')
-            setFormState({ description: '', products: [] })
-            queryClient.invalidateQueries('get-lists')
-            onClose();
+            try {
+                await endpoints.addList(db, product)
+                toast.success('New List saved!')
+                setFormState({ description: '', products: [] })
+                queryClient.invalidateQueries('get-lists')
+                onClose();
+            } catch (err) {
+                toast.error('List not saved, please try again')
+            }
         } catch (err) {
             toast.error('Product not saved, please try again')
         }

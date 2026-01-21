@@ -6,9 +6,10 @@ export type ProductType = {
     prices?: string[];
     icon?: ReactNode;
     iconName?: string;
-    categories?: any;
+    categories: string[];
     onChangeCheckbox?: () => void;
     checked?: boolean;
+    onClick?: () => void
 }
 
 export type ListType = {
@@ -20,6 +21,14 @@ export type ListType = {
     products?: any[];
     date?: string;
     sum?: number;
+}
+
+export interface CategoryType {
+    id?: string;
+    name: string;
+    iconName?: string;
+    color?: string;
+    createdAt?: Date;
 }
 
 export type User = {

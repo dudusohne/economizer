@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { DividerHorizontal, FlexCol, FlexRow, NormalPageContainer } from '../../Layout';
@@ -9,6 +9,11 @@ import { ListPlusIcon } from "../../Layout/icons";
 import { NewList } from './NewList';
 import { makeQuery } from '../../services/queries';
 import { ListType } from '../../types';
+import { useMutation } from 'react-query';
+import { AuthContext } from '../../context/AuthContext';
+import { endpoints } from '../../services/endpoints';
+import { toast } from 'react-toastify';
+import { queryClient } from '../../services/queryClient';
 
 export function Home() {
     const [openNewListModal, setOpenNewListModal] = useState<boolean>(false)
@@ -23,6 +28,26 @@ export function Home() {
         navigate(`/list/${list}`)
     }
 
+    //HANDLERS
+    const { db } = useContext(AuthContext);
+
+    const deleteListMutation = useMutation(
+        (id: string) => endpoints.deleteList(db, id),
+        {
+            onSuccess: () => {
+                toast.success("List removed successfully!");
+                queryClient.invalidateQueries("get-lists");
+            },
+            onError: () => {
+                toast.error("Error removing list. Please try again.");
+            }
+        }
+    );
+
+    const handleDeleteList = (id: string) => {
+        deleteListMutation.mutate(id);
+    };
+
     return (
         <>
             <NavBar />
@@ -32,7 +57,7 @@ export function Home() {
                     <ListPlusIcon onClick={() => setOpenNewListModal(true)} />
                 </FlexRow>
                 <DividerHorizontal />
-                <FlexCol style={{ marginTop: '16px', rowGap: '12px' }}>
+                <FlexCol style={{ rowGap: '12px' }}>
                     {(lists as ListType[])?.map((list: ListType) =>
                         <ListCard
                             key={list?.id}
@@ -41,6 +66,8 @@ export function Home() {
                             date={list?.date}
                             sum={list?.sum}
                             onClick={() => handleNavigateToList(list?.id)}
+                            onDelete={() => list.id && handleDeleteList(list.id.toString())}
+                            onEdit={() => handleNavigateToList(list?.id)}
                         />
                     )}
                 </FlexCol>
