@@ -10,11 +10,11 @@ import { EcoModal } from "../../../components/Modal";
 import { FlexCol } from "../../../Layout";
 import { endpoints } from "../../../services/endpoints";
 import { AuthContext } from "../../../context/AuthContext";
-import { ItemRecursive } from "../../../components/ItemRecursive";
 import { ItemRecursiveWrapper } from './styles';
 import { EcoButton } from "../../../components/EcoButton";
 import { queryClient } from "../../../services/queryClient";
 import { ListType, ProductType } from "../../../types";
+import { ItemListCard } from "../../../components/ItemListCard";
 
 interface NewProductProps {
     open: boolean;
@@ -122,7 +122,7 @@ export function NewList({ open, onClose }: NewProductProps) {
                 />
                 <ItemRecursiveWrapper>
                     {products?.map((item: ProductType, index: number) =>
-                        <ItemRecursive
+                        <ItemListCard
                             key={index}
                             id={item.id}
                             name={item.name}

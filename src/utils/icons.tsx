@@ -22,12 +22,12 @@ export const icons: Record<string, IconType> = {
 };
 
 export const categoryColor: Record<string, string> = {
-    "greyLight": theme.color.greyLight,
-    "yellow": theme.color.yellow,
-    "tertiary": theme.color.tertiary,
-    "blue": theme.color.blue,
-    "fifth": theme.color.fifth,
-    "red": theme.color.red,
+    "greyLight": theme.color.categoryColor5,
+    "yellow": theme.color.categoryColor1,
+    "tertiary": theme.color.categoryColor6,
+    "blue": theme.color.categoryColor4,
+    "fifth": theme.color.categoryColor3,
+    "red": theme.color.categoryColor2,
 }
 interface RenderIconProps {
     name?: string;

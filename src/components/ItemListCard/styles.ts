@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { responsivity } from "../../hooks/useResponsivity";
 
-export const ItemRecursiveContainer = styled.div`
-    display: grid;
-    grid-template-columns: 0.5fr 4fr 1.5fr;
+export const ItemListCardContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     height: 40px;
     column-gap: 16px;

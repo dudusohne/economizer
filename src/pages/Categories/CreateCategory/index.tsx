@@ -13,12 +13,12 @@ import { CategoryType } from "../../../types";
 import { categoryColor, icons } from "../../../utils/icons";
 import { theme } from "../../../theme";
 
-interface NewProductProps {
+interface CreateProductProps {
     open: boolean;
     onClose: () => void;
 }
 
-export function NewCategory({ open, onClose }: NewProductProps) {
+export function CreateCategory({ open, onClose }: CreateProductProps) {
     const [formState, setFormState] = useState({
         description: '',
         icon: '',
@@ -28,7 +28,6 @@ export function NewCategory({ open, onClose }: NewProductProps) {
     const { db } = useContext(AuthContext)
 
     const handleCreateCategory = async () => {
-
         const category: CategoryType = {
             name: formState.description,
             iconName: formState.icon,
@@ -66,7 +65,6 @@ export function NewCategory({ open, onClose }: NewProductProps) {
 
                 <Box>
                     <DialogContentText>Choose an icon:</DialogContentText>
-
                     <Box
                         sx={{
                             display: 'grid',

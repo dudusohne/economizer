@@ -17,6 +17,13 @@ export const theme = {
     green: '#42B983',
     red: 'red',
     blue: '#4293b9',
+
+    categoryColor1: '#ffc55a',
+    categoryColor2: '#ff735a',
+    categoryColor3: '#5aff83',
+    categoryColor4: '#5ae6ff',
+    categoryColor5: '#a7bcc0',
+    categoryColor6: '#ac88e6',
   },
 
   size: {

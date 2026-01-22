@@ -3,13 +3,13 @@ import Checkbox from '@mui/material/Checkbox';
 import { ESubtitle } from '../../Layout/text';
 import { ProductType } from '../../types';
 import { renderIcon } from '../../utils/icons';
-import { CategoriesPositioner, CategoryWrapper, ItemRecursiveContainer } from './styles';
+import { CategoriesPositioner, CategoryWrapper, ItemListCardContainer } from './styles';
 import { theme } from '../../theme';
 
-export function ItemRecursive({ name, iconName, categories, onChangeCheckbox, checked }: ProductType) {
+export function ItemListCard({ name, iconName, categories, onChangeCheckbox, checked }: ProductType) {
     return (
         <>
-            <ItemRecursiveContainer>
+            <ItemListCardContainer onClick={onChangeCheckbox}>
                 {renderIcon({
                     name: iconName,
                     size: 30,
@@ -21,7 +21,7 @@ export function ItemRecursive({ name, iconName, categories, onChangeCheckbox, ch
                     onChange={onChangeCheckbox}
                     name={iconName}
                 />
-            </ItemRecursiveContainer>
+            </ItemListCardContainer>
             {categories?.length &&
                 <CategoriesPositioner>
                     {categories?.map((category: any, index: number) =>
@@ -29,7 +29,6 @@ export function ItemRecursive({ name, iconName, categories, onChangeCheckbox, ch
                     )}
                 </CategoriesPositioner>
             }
-
         </>
     )
 }

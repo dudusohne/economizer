@@ -5,8 +5,8 @@ import { makeQuery } from "../../services/queries";
 import { Item } from "../../components/Item";
 import { ListPlusIcon } from "../../Layout/icons";
 import { ESubtitle } from "../../Layout/text";
-import { NewCategory } from "./NewCategory";
 import { EditCategory } from "./EditCategory";
+import { CreateCategory } from "./CreateCategory";
 
 export function Categories() {
     const [openCreateModal, setOpenCreateModal] = useState<boolean>(false)
@@ -50,7 +50,7 @@ export function Categories() {
                     </FlexRow>
                 </FlexCol>
             </NormalPageContainer>
-            <NewCategory open={openCreateModal} onClose={() => setOpenCreateModal(false)} />
+            <CreateCategory open={openCreateModal} onClose={() => setOpenCreateModal(false)} />
             <EditCategory id={editId} open={editModal} onClose={() => setEditModal(false)} />
         </>
 

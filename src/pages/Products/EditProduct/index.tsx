@@ -13,7 +13,7 @@ import { ProductType, CategoryType } from "../../../types";
 import { endpoints } from "../../../services/endpoints";
 import { AuthContext } from "../../../context/AuthContext";
 import { queryClient } from "../../../services/queryClient";
-import { CategoryToCheck } from "../../Categories/CategoryToCheck";
+import { CategoryToCheck } from "../../Categories/CategoryCard";
 
 interface EditProductProps {
     open: boolean;

@@ -8,7 +8,7 @@ import { EBodyText } from "../../../Layout/text";
 import { EcoButton } from "../../../components/EcoButton";
 import { ProductType } from "../../../types";
 import { makeQuery } from "../../../services/queries";
-import { CategoryToCheck } from "../../Categories/CategoryToCheck";
+import { CategoryToCheck } from "../../Categories/CategoryCard";
 import { endpoints } from "../../../services/endpoints";
 import { AuthContext } from "../../../context/AuthContext";
 import { toast } from "react-toastify";
