@@ -5,7 +5,7 @@ import { FaEdit } from "react-icons/fa";
 import { BsBackspaceReverseFill } from "react-icons/bs";
 
 import { FlexCol, FlexRow } from "../../Layout";
-import { EBodyText, ESubtitle, ETitle } from "../../Layout/text";
+import { ESubtitle, ETitle } from "../../Layout/text";
 import { ListCardContainer } from "./styles";
 import { theme } from "../../theme";
 import { formatDateBR } from "../../utils/icons";
