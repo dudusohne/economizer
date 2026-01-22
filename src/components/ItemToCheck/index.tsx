@@ -7,39 +7,24 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { EItemSubtitle, ItemToCheckContainer } from './styles';
 import { FlexRow } from '../../Layout';
 import { theme } from '../../theme';
-import { useContext, useMemo } from 'react';
-import { AuthContext } from '../../context/AuthContext';
-import { useQuery } from 'react-query';
-import { endpoints } from '../../services/endpoints';
+import { useMemo } from 'react';
+import { useCategories } from '../../hooks/useCategories';
 
 export function ItemToCheck({ name, iconName, categories, onChangeCheckbox, checked }: ProductType) {
     const handleOpenOptions = (event: any) => {
         event.stopPropagation();
     }
 
-    const { db } = useContext(AuthContext)
-
-    const { data: categoriesData } = useQuery(
-        "get-categories",
-        async () => {
-            const snap = await endpoints.getCategories(db);
-            return snap.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            })) as CategoryType[];
-        },
-        { enabled: !!name }
-    );
+    const { data: categoriesDefault } = useCategories();
 
     const categoryMap = useMemo(() => {
-        if (!categoriesData) return {};
-
-        return categoriesData.reduce((acc, category) => {
-            //@ts-expect-error
+        if (!categoriesDefault) return {};
+        return categoriesDefault.reduce((acc, category) => {
+            //@ts-ignore
             acc[category.id] = category;
             return acc;
         }, {} as Record<string, CategoryType>);
-    }, [categoriesData]);
+    }, [categoriesDefault]);
 
     const mainCategory = categoryMap[categories[0]];
 

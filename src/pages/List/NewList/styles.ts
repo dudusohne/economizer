@@ -6,8 +6,10 @@ export const ItemRecursiveWrapper = styled.div`
     flex-direction: column;
     overflow-y: auto;
     row-gap: 10px;
+
+    scrollbar-gutter: stable;
     padding-right: 16px;
-    
+
     ${responsivity.lowMobile`
         height: 40vh;
         height: 40dvh;
@@ -18,3 +20,4 @@ export const ItemRecursiveWrapper = styled.div`
         height: 47dvh;
     `}
 `
+

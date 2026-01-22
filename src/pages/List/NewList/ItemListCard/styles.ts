@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { responsivity } from "../../hooks/useResponsivity";
+import { responsivity } from "../../../../hooks/useResponsivity";
 
 export const ItemListCardContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    height: 40px;
+    height: 35px;
     column-gap: 16px;
     border-radius: 8px;
     border: 1px solid ${(props) => props.theme.color.greyDark};

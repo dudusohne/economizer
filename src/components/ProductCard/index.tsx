@@ -1,39 +1,25 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { useQuery } from 'react-query';
 import { FlexRow } from '../../Layout';
 import { ETitle } from '../../Layout/text';
-import { endpoints } from '../../services/endpoints';
 import { CategoryType, ProductType } from '../../types';
 import { categoryColor, renderIcon } from '../../utils/icons';
 import { CategoriesPositioner, CategoryWrapper, ItemContainer, ItemTitle } from './styles';
-import { useContext, useMemo } from 'react';
-import { AuthContext } from '../../context/AuthContext';
+import { useMemo } from 'react';
 import { theme } from '../../theme';
+import { useCategories } from '../../hooks/useCategories';
 
 export function ProductCard({ name, prices, categories, onClick }: ProductType) {
-    const { db } = useContext(AuthContext)
 
-    const { data: categoriesData } = useQuery(
-        "get-categories",
-        async () => {
-            const snap = await endpoints.getCategories(db);
-            return snap.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            })) as CategoryType[];
-        },
-        { enabled: !!name }
-    );
+    const { data: categoriesDefault } = useCategories();
 
     const categoryMap = useMemo(() => {
-        if (!categoriesData) return {};
-
-        return categoriesData.reduce((acc, category) => {
-            //@ts-expect-error
+        if (!categoriesDefault) return {};
+        return categoriesDefault.reduce((acc, category) => {
+            //@ts-ignore
             acc[category.id] = category;
             return acc;
         }, {} as Record<string, CategoryType>);
-    }, [categoriesData]);
+    }, [categoriesDefault]);
 
     const mainCategory = categoryMap[categories[0]];
 
@@ -60,11 +46,6 @@ export function ProductCard({ name, prices, categories, onClick }: ProductType) 
 
                         return (
                             <CategoryWrapper key={categoryId}>
-                                {/* {renderIcon({
-                                    name: category.iconName,
-                                    size: 16,
-                                    color: theme.color.white,
-                                })} */}
                                 <span>{category.name.toLocaleUpperCase()}</span>
                             </CategoryWrapper>
                         );

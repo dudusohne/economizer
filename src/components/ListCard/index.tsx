@@ -31,7 +31,7 @@ export function ListCard({ title, items, date, sum, onClick, onEdit, onDelete }:
             </FlexCol>
             {!optionsOpen ?
                 (
-                    <>
+                    <FlexRow style={{ alignItems: 'center', gap: '24px' }}>
                         <FlexCol style={{ gap: '4px', alignItems: 'flex-start' }}>
                             <ETitle style={{ color: 'gray' }}>
                                 {formatDateBR(date)}
@@ -48,7 +48,7 @@ export function ListCard({ title, items, date, sum, onClick, onEdit, onDelete }:
 
                         </FlexCol>
                         <BsThreeDotsVertical fontSize={36} onClick={(e: any) => handleOpenOptions(e)} />
-                    </>
+                    </FlexRow>
                 )
                 :
                 <FlexRow style={{ gap: '36px', alignItems: 'center' }} onClick={(e) => e.stopPropagation()}>
