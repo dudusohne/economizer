@@ -8,11 +8,11 @@ import { EBodyText } from "../../../Layout/text";
 import { EcoButton } from "../../../components/EcoButton";
 import { ProductType } from "../../../types";
 import { makeQuery } from "../../../services/queries";
-import { CategoryToCheck } from "../../Categories/CategoryCard";
 import { endpoints } from "../../../services/endpoints";
 import { AuthContext } from "../../../context/AuthContext";
 import { toast } from "react-toastify";
 import { queryClient } from "../../../services/queryClient";
+import { CategoryCard } from "../../Categories/CategoryCard";
 
 interface NewProductProps {
     open: boolean;
@@ -41,7 +41,6 @@ export function NewProduct({ open, onClose }: NewProductProps) {
             };
         });
     };
-
 
     //CREATE "PRODUCTS"
     const handleAddProduct = async (formState: any) => {
@@ -80,12 +79,13 @@ export function NewProduct({ open, onClose }: NewProductProps) {
 
     const { categories } = useGetCategories()
 
-    console.log(formState.categories)
-
     return (
         <EcoModal open={open} onClose={handleClose} title="New Product" subtitle="register a new product">
             <FlexCol style={{ width: '100%', rowGap: '8px' }}>
-                <TextField id="filled-basic" label="Name*" variant="filled"
+                <TextField
+                    label="Name*"
+                    variant="filled"
+                    inputProps={{ maxLength: 23 }}
                     onChange={(e) => {
                         setFormState({
                             ...formState,
@@ -93,27 +93,32 @@ export function NewProduct({ open, onClose }: NewProductProps) {
                         })
                     }}
                 />
-                <TextField id="filled-basic" label="Price (R$)" variant="filled"
+                <TextField
+                    id="filled-basic"
+                    label="Price (R$)"
+                    variant="filled"
+                    inputProps={{ maxLength: 8 }}
                     onChange={(e) => {
                         setFormState({
                             ...formState,
-                            prices: [e.target.value]
+                            name: e.target.value
                         })
                     }}
                 />
 
                 <EBodyText style={{ marginTop: '6px' }}>Choose an category:</EBodyText>
 
-                {categories?.map((item: any) => (
-                    <CategoryToCheck
-                        key={item.id}
-                        name={item.name}
-                        iconName={item.iconName}
-                        checked={formState.categories.includes(item.id)}
-                        onChangeCheckbox={() => handleChange(item.id)}
-                    />
-                ))}
-
+                <FlexCol style={{ overflowY: 'auto', gap: '4px', paddingRight: '8px' }}>
+                    {categories?.map((item: any) => (
+                        <CategoryCard
+                            key={item.id}
+                            name={item.name}
+                            iconName={item.iconName}
+                            checked={formState.categories.includes(item.id)}
+                            onChangeCheckbox={() => handleChange(item.id)}
+                        />
+                    ))}
+                </FlexCol>
 
                 <DividerHorizontal style={{ marginTop: '8px', backgroundColor: `${theme.color.greyLight}` }} />
 

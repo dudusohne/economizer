@@ -12,7 +12,7 @@ interface CategoryToCheckProps {
     checked: boolean
 }
 
-export function CategoryToCheck({ name, iconName, onChangeCheckbox, checked }: CategoryToCheckProps) {
+export function CategoryCard({ name, iconName, onChangeCheckbox, checked }: CategoryToCheckProps) {
     return (
         <CategoryToCheckContainer onClick={onChangeCheckbox}>
             <FlexRow style={{ gap: '8px', alignItems: 'center' }}>

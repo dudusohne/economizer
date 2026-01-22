@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
+import { IoIosCloseCircle } from "react-icons/io";
+
 import { EcoButton } from "../../components/EcoButton";
 import { AuthContext } from "../../context/AuthContext";
 import { endpoints } from "../../services/endpoints";
@@ -14,6 +16,8 @@ import { ItemToCheck } from "../../components/ItemToCheck";
 import { makeQuery } from "../../services/queries";
 import { ListType, ProductType } from "../../types";
 import { queryClient } from "../../services/queryClient";
+import { theme } from "../../theme";
+import { MdDeleteForever } from "react-icons/md";
 
 export function List() {
     const { db } = useContext(AuthContext)
@@ -24,10 +28,10 @@ export function List() {
 
     const navigate = useNavigate()
 
-   const { useGetListById } = makeQuery()
+    const { useGetListById } = makeQuery()
 
     const { list } = useGetListById(id ?? '')
-    
+
     useEffect(() => setItems(list?.products), [list])
 
     const handleUpdateList = async () => {
@@ -102,8 +106,8 @@ export function List() {
             <ListContainer>
                 <FlexCol style={{ paddingBlock: '24px', width: '100%' }}>
                     <FlexRow style={{ justifyContent: 'space-between', marginBottom: '12px' }}>
-                        <ETitle>{list?.description}</ETitle>
-                        <ETitle>{list?.date}</ETitle>
+                        <ETitle>{list?.description ?? '-'}</ETitle>
+                        <ETitle>{list?.date ?? '-'}</ETitle>
                     </FlexRow>
                 </FlexCol>
                 <ListRecursiveWrapper height={handleScreenHeight(window.innerHeight)}>
@@ -121,13 +125,23 @@ export function List() {
                         />
                     )}
                 </ListRecursiveWrapper>
-                <FlexRow style={{ width: '100%', columnGap: '12px' }}>
+                <FlexRow style={{ width: '100%', columnGap: '24px', alignItems: 'center' }}>
                     <EcoButton onClick={handleUpdateList} style={{ height: '50px', width: '100%' }}>
                         SAVE
                     </EcoButton>
-                    <EcoButton onClick={handleDeleteList} style={{ height: '50px', width: '100%', backgroundColor: 'red' }}>
-                        DELETE
-                    </EcoButton>
+                    .
+                    <IoIosCloseCircle
+                        fontSize={90}
+                        color={theme.color.greyDark}
+                        onClick={handleDeleteList}
+                    />
+                    .
+                    <MdDeleteForever
+                        fontSize={90}
+                        color={theme.color.red}
+                        onClick={handleDeleteList}
+                    />
+
                 </FlexRow>
             </ListContainer>
         </>

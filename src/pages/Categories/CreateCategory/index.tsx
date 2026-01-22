@@ -20,7 +20,7 @@ interface CreateProductProps {
 
 export function CreateCategory({ open, onClose }: CreateProductProps) {
     const [formState, setFormState] = useState({
-        description: '',
+        name: '',
         icon: '',
         color: '',
     });
@@ -29,7 +29,7 @@ export function CreateCategory({ open, onClose }: CreateProductProps) {
 
     const handleCreateCategory = async () => {
         const category: CategoryType = {
-            name: formState.description,
+            name: formState.name,
             iconName: formState.icon,
             color: formState.color
         }
@@ -39,7 +39,7 @@ export function CreateCategory({ open, onClose }: CreateProductProps) {
                 await endpoints.addCategory(db, category)
                 toast.success('New category created!')
                 setFormState({
-                    description: '',
+                    name: '',
                     icon: '',
                     color: '',
                 })
@@ -56,12 +56,17 @@ export function CreateCategory({ open, onClose }: CreateProductProps) {
     return (
         <EcoModal open={open} onClose={onClose} title="Create Category" subtitle="add a new category">
             <FlexCol style={{ width: '100%', rowGap: '16px' }}>
-                <TextField id="filled-basic" label="Name*" variant="filled" onChange={(e) => {
-                    setFormState({
-                        ...formState,
-                        description: e.target.value
-                    })
-                }} />
+                <TextField
+                    label="Name*"
+                    variant="filled"
+                    inputProps={{ maxLength: 18 }}
+                    onChange={(e) => {
+                        setFormState({
+                            ...formState,
+                            name: e.target.value
+                        })
+                    }}
+                />
 
                 <Box>
                     <DialogContentText>Choose an icon:</DialogContentText>

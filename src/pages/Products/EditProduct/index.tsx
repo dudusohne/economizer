@@ -13,7 +13,7 @@ import { ProductType, CategoryType } from "../../../types";
 import { endpoints } from "../../../services/endpoints";
 import { AuthContext } from "../../../context/AuthContext";
 import { queryClient } from "../../../services/queryClient";
-import { CategoryToCheck } from "../../Categories/CategoryCard";
+import { CategoryCard } from "../../Categories/CategoryCard";
 
 interface EditProductProps {
     open: boolean;
@@ -119,15 +119,25 @@ export function EditProduct({ open, onClose, productId }: EditProductProps) {
                 <TextField
                     label="Name*"
                     variant="filled"
-                    value={formState.name}
-                    onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                    inputProps={{ maxLength: 23 }}
+                    onChange={(e) => {
+                        setFormState({
+                            ...formState,
+                            name: e.target.value
+                        })
+                    }}
                 />
-
                 <TextField
+                    id="filled-basic"
                     label="Price (R$)"
                     variant="filled"
-                    value={formState.prices?.[0] || ""}
-                    onChange={(e) => setFormState({ ...formState, prices: [e.target.value] })}
+                    inputProps={{ maxLength: 8 }}
+                    onChange={(e) => {
+                        setFormState({
+                            ...formState,
+                            name: e.target.value
+                        })
+                    }}
                 />
 
                 <DividerHorizontal style={{ backgroundColor: theme.color.greyLight, marginBlock: '4px' }} />
@@ -135,7 +145,7 @@ export function EditProduct({ open, onClose, productId }: EditProductProps) {
                 <EBodyText>Categories:</EBodyText>
 
                 {categories?.map((item: any) => (
-                    <CategoryToCheck
+                    <CategoryCard
                         key={item.id}
                         name={item.name}
                         iconName={item.iconName}

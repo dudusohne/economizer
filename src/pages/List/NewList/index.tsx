@@ -45,23 +45,17 @@ export function NewList({ open, onClose }: NewProductProps) {
     });
 
     const handleSaveNewList = async () => {
-        const summ = formState.products.reduce((sum: any, product: any) => {
-            const lastPrice = parseFloat(product.prices[product.prices.length - 1]);
-            return sum + lastPrice;
-        }, 0);
-
         const productsFormatted = formState.products.map((product: any) => {
             return { ...product, checked: false };
         });
 
-        const summFormatted = parseFloat(summ.toFixed(2));
-
-        // const newdate = new Date();
-        // const dia = newdate?.getDate();
-        // const mes = newdate?.getMonth() + 1;
-        // const ano = newdate?.getFullYear();
-
-        // const dataFormatada = `${dia}/${mes}/${ano}`;
+        const summFormatted = Number(
+            formState.products.reduce((sum: number, product: any) => {
+                const last = product.prices?.at(-1);
+                const price = Number(last);
+                return isNaN(price) ? sum : sum + price;
+            }, 0).toFixed(2)
+        );
 
         const dateISO = new Date().toISOString().split('T')[0]
 

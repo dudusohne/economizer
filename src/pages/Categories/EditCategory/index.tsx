@@ -56,7 +56,7 @@ export function EditCategory({ open, onClose, id }: EditProductProps) {
                 await endpoints.updateCategory(db, category.id ?? '', category)
                 toast.success('Category updated!')
                 setFormState({
-                    description: '',
+                    name: '',
                     iconName: '',
                     color: '',
                 })
@@ -76,16 +76,15 @@ export function EditCategory({ open, onClose, id }: EditProductProps) {
             {formState?.id ? (
                 <FlexCol style={{ width: '100%', rowGap: '16px' }}>
                     <TextField
-                        id="filled-basic"
                         label="Name*"
                         variant="filled"
+                        inputProps={{ maxLength: 18 }}
                         onChange={(e) => {
                             setFormState({
                                 ...formState,
                                 name: e.target.value
                             })
                         }}
-                        value={formState.name}
                     />
 
                     <Box>
