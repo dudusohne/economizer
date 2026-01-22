@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { responsivity } from "../../hooks/useResponsivity";
+import { theme } from "../../theme";
 
 export const EItemSubtitle = styled.div<{ color?: string; checked?: boolean }>`
     font-weight: 400;
@@ -15,7 +16,7 @@ export const EItemSubtitle = styled.div<{ color?: string; checked?: boolean }>`
     `}
 `
 
-export const ItemToCheckContainer = styled.div<{ color?: string }>`
+export const ItemToCheckContainer = styled.div<{ color?: string, checked?: boolean }>`
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -26,6 +27,10 @@ export const ItemToCheckContainer = styled.div<{ color?: string }>`
     border: 1px solid ${(props) => props.color ?? props.theme.color.greyDark};
     padding: 8px;
     transition: all 0.2s ease-in-out;
+
+    ${(props) => props.checked && `
+        background-color: ${theme.color.green};
+    `}
 
     &:hover {
         cursor: pointer;

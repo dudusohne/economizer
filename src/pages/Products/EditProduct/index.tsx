@@ -14,6 +14,7 @@ import { endpoints } from "../../../services/endpoints";
 import { AuthContext } from "../../../context/AuthContext";
 import { queryClient } from "../../../services/queryClient";
 import { CategoryCard } from "../../Categories/CategoryCard";
+import { IoIosCloseCircle } from "react-icons/io";
 
 interface EditProductProps {
     open: boolean;
@@ -115,7 +116,13 @@ export function EditProduct({ open, onClose, productId }: EditProductProps) {
 
     return (
         <EcoModal open={open} onClose={onClose} title="Edit Product" subtitle="update product information">
-            <FlexCol style={{ width: "100%", rowGap: "8px" }}>
+            <FlexCol
+                style={{
+                    width: "100%",
+                    rowGap: "8px",
+                    height: "100%",
+                    minHeight: 0,
+                }}>
                 <TextField
                     label="Name*"
                     variant="filled"
@@ -126,6 +133,7 @@ export function EditProduct({ open, onClose, productId }: EditProductProps) {
                             name: e.target.value
                         })
                     }}
+                    value={formState?.name}
                 />
                 <TextField
                     id="filled-basic"
@@ -140,28 +148,42 @@ export function EditProduct({ open, onClose, productId }: EditProductProps) {
                     }}
                 />
 
+                <EBodyText style={{ fontSize: '12px' }}>Últimos preços:</EBodyText>
+                {formState?.prices?.map((price) =>
+                    <EBodyText>
+                        {price}
+                    </EBodyText>
+                )}
+
                 <DividerHorizontal style={{ backgroundColor: theme.color.greyLight, marginBlock: '4px' }} />
 
                 <EBodyText>Categories:</EBodyText>
 
-                {categories?.map((item: any) => (
-                    <CategoryCard
-                        key={item.id}
-                        name={item.name}
-                        iconName={item.iconName}
-                        checked={formState.categories.includes(item.id)}
-                        onChangeCheckbox={() => handleChange(item)}
-                    />
-                ))}
+                <FlexCol style={{ overflowY: 'auto', gap: '4px', paddingRight: '8px' }}>
+                    {categories?.map((item: any) => (
+                        <CategoryCard
+                            key={item.id}
+                            name={item.name}
+                            iconName={item.iconName}
+                            checked={formState.categories.includes(item.id)}
+                            onChangeCheckbox={() => handleChange(item)}
+                        />
+                    ))}
+                </FlexCol>
 
                 <DividerHorizontal style={{ backgroundColor: theme.color.greyLight, marginBlock: '4px' }} />
 
-                <FlexRow style={{ gap: "16px" }}>
-                    <EcoButton onClick={handleUpdateProduct} style={{ width: "100%" }}>
+                <FlexRow style={{ gap: "16px", alignItems: 'center' }}>
+                    <EcoButton onClick={handleUpdateProduct} style={{ width: "100%", height: '50px' }}>
                         UPDATE
                     </EcoButton>
+                    <IoIosCloseCircle
+                        fontSize={90}
+                        color={theme.color.greyDark}
+                        onClick={onClose}
+                    />
                     <MdDeleteForever
-                        fontSize={48}
+                        fontSize={90}
                         color={theme.color.red}
                         onClick={handleDeleteProduct}
                     />

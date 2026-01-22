@@ -45,7 +45,7 @@ export function ItemToCheck({ name, iconName, categories, onChangeCheckbox, chec
 
     return (
         <>
-            <ItemToCheckContainer color={mainCategory?.color ? categoryColor[mainCategory?.color] : theme.color.secondary}>
+            <ItemToCheckContainer color={mainCategory?.color ? categoryColor[mainCategory?.color] : theme.color.secondary} checked={checked}>
                 <FlexRow style={{ gap: '16px', alignItems: 'center' }}>
                     {renderIcon({
                         name: mainCategory?.iconName,
@@ -60,7 +60,11 @@ export function ItemToCheck({ name, iconName, categories, onChangeCheckbox, chec
                         onChange={onChangeCheckbox}
                         name={iconName}
                         sx={{
-                            transform: 'scale(1.4)'
+                            transform: 'scale(1.4)',
+                            color: theme.color.checkbox,
+                            '&.Mui-checked': {
+                                color: theme.color.checkbox,
+                            },
                         }}
                     />
                     <BsThreeDotsVertical fontSize={36} onClick={(e: any) => handleOpenOptions(e)} />

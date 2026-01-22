@@ -13,6 +13,7 @@ import { CategoryType } from "../../../types";
 import { categoryColor, icons } from "../../../utils/icons";
 import { makeQuery } from "../../../services/queries";
 import { theme } from "../../../theme";
+import { IoIosCloseCircle } from "react-icons/io";
 
 interface EditProductProps {
     open: boolean;
@@ -85,6 +86,7 @@ export function EditCategory({ open, onClose, id }: EditProductProps) {
                                 name: e.target.value
                             })
                         }}
+                        value={formState?.name}
                     />
 
                     <Box>
@@ -159,6 +161,11 @@ export function EditCategory({ open, onClose, id }: EditProductProps) {
                     <EcoButton style={{ height: '50px' }} onClick={handleUpdateCategory}>
                         UPDATE CATEGORY
                     </EcoButton>
+                    <IoIosCloseCircle
+                        fontSize={90}
+                        color={theme.color.greyDark}
+                        onClick={onClose}
+                    />
                 </FlexCol>
             ) : (
                 <p>carregando...</p>

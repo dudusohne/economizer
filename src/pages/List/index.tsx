@@ -18,6 +18,7 @@ import { ListType, ProductType } from "../../types";
 import { queryClient } from "../../services/queryClient";
 import { theme } from "../../theme";
 import { MdDeleteForever } from "react-icons/md";
+import { formatDateBR } from "../../utils/icons";
 
 export function List() {
     const { db } = useContext(AuthContext)
@@ -100,6 +101,12 @@ export function List() {
         [window.innerHeight, doesntMatchesMobile, doesntMatchesNotebook]
     )
 
+    const handleClose = () => {
+        setItems([])
+        setSearch(undefined)
+        navigate('/')
+    }
+
     return (
         <>
             <NavBar />
@@ -107,7 +114,7 @@ export function List() {
                 <FlexCol style={{ paddingBlock: '24px', width: '100%' }}>
                     <FlexRow style={{ justifyContent: 'space-between', marginBottom: '12px' }}>
                         <ETitle>{list?.description ?? '-'}</ETitle>
-                        <ETitle>{list?.date ?? '-'}</ETitle>
+                        <ETitle>{formatDateBR(list?.date) ?? '-'}</ETitle>
                     </FlexRow>
                 </FlexCol>
                 <ListRecursiveWrapper height={handleScreenHeight(window.innerHeight)}>
@@ -129,19 +136,16 @@ export function List() {
                     <EcoButton onClick={handleUpdateList} style={{ height: '50px', width: '100%' }}>
                         SAVE
                     </EcoButton>
-                    .
                     <IoIosCloseCircle
                         fontSize={90}
                         color={theme.color.greyDark}
-                        onClick={handleDeleteList}
+                        onClick={handleClose}
                     />
-                    .
                     <MdDeleteForever
                         fontSize={90}
                         color={theme.color.red}
                         onClick={handleDeleteList}
                     />
-
                 </FlexRow>
             </ListContainer>
         </>

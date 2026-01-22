@@ -15,6 +15,7 @@ import { EcoButton } from "../../../components/EcoButton";
 import { queryClient } from "../../../services/queryClient";
 import { ListType, ProductType } from "../../../types";
 import { ItemListCard } from "../../../components/ItemListCard";
+import { getLocalISODate } from "../../../utils/icons";
 
 interface NewProductProps {
     open: boolean;
@@ -57,7 +58,7 @@ export function NewList({ open, onClose }: NewProductProps) {
             }, 0).toFixed(2)
         );
 
-        const dateISO = new Date().toISOString().split('T')[0]
+        const dateISO = getLocalISODate();
 
         const product: ListType = {
             description: formState.description,
@@ -100,12 +101,17 @@ export function NewList({ open, onClose }: NewProductProps) {
     return (
         <EcoModal open={open} onClose={onClose} title="New List" subtitle="begin a new list">
             <FlexCol style={{ width: '100%', rowGap: '16px' }}>
-                <TextField id="filled-basic" label="Name*" variant="filled" onChange={(e) => {
-                    setFormState({
-                        ...formState,
-                        description: e.target.value
-                    })
-                }} />
+                <TextField
+                    label="Name*"
+                    variant="filled"
+                    inputProps={{ maxLength: 23 }}
+                    onChange={(e) => {
+                        setFormState({
+                            ...formState,
+                            description: e.target.value
+                        })
+                    }}
+                />
                 <Input
                     id="input-with-icon-adornment"
                     endAdornment={

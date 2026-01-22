@@ -24,6 +24,8 @@ export const theme = {
     categoryColor4: '#5ae6ff',
     categoryColor5: '#a7bcc0',
     categoryColor6: '#ac88e6',
+
+    checkbox: '#003B36',
   },
 
   size: {

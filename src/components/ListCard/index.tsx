@@ -8,6 +8,7 @@ import { FlexCol, FlexRow } from "../../Layout";
 import { EBodyText, ESubtitle, ETitle } from "../../Layout/text";
 import { ListCardContainer } from "./styles";
 import { theme } from "../../theme";
+import { formatDateBR } from "../../utils/icons";
 
 export function ListCard({ title, items, date, sum, onClick, onEdit, onDelete }: any) {
     const [optionsOpen, setOptionsOpen] = useState<boolean>(false)
@@ -24,22 +25,18 @@ export function ListCard({ title, items, date, sum, onClick, onEdit, onDelete }:
 
     return (
         <ListCardContainer onClick={!optionsOpen && onClick} optionsOpen={optionsOpen}>
-            <FlexCol style={{ rowGap: '8px', alignItems: 'space-between' }}>
+            <FlexCol style={{ rowGap: '8px', alignItems: 'space-between', minWidth: '0' }}>
                 <ETitle style={{ color: `${theme.color.secondary}` }}>{title !== '' ? title : '-'}</ETitle>
                 <ESubtitle>{items} {items > 1 ? 'items' : 'item'}</ESubtitle>
             </FlexCol>
             {!optionsOpen ?
-                <FlexRow style={{ gap: '24px', alignItems: 'center' }}>
-                    <FlexCol style={{ alignItems: 'flex-start', rowGap: '8px' }}>
-                        <EBodyText style={{ color: theme.color.greyDark }}>Criado em</EBodyText>
-                        <ETitle>
-                            {date}
-                        </ETitle>
-                    </FlexCol>
+                (
+                    <>
+                        <FlexCol style={{ gap: '4px', alignItems: 'flex-start' }}>
+                            <ETitle style={{ color: 'gray' }}>
+                                {formatDateBR(date)}
+                            </ETitle>
 
-                    <FlexRow style={{ gap: '16px', alignItems: 'center' }}>
-                        <FlexCol style={{ alignItems: 'flex-start', rowGap: '8px' }}>
-                            <EBodyText style={{ color: theme.color.greyDark }}>Total</EBodyText>
                             <ETitle>
                                 {new Intl.NumberFormat('pt-BR', {
                                     style: 'currency',
@@ -48,10 +45,11 @@ export function ListCard({ title, items, date, sum, onClick, onEdit, onDelete }:
                                     maximumFractionDigits: 2,
                                 }).format(sum)}
                             </ETitle>
+
                         </FlexCol>
                         <BsThreeDotsVertical fontSize={36} onClick={(e: any) => handleOpenOptions(e)} />
-                    </FlexRow>
-                </FlexRow>
+                    </>
+                )
                 :
                 <FlexRow style={{ gap: '36px', alignItems: 'center' }} onClick={(e) => e.stopPropagation()}>
                     <BsBackspaceReverseFill fontSize={42} color={theme.color.greyDark} onClick={(e: any) => handleCloseOptions(e)} />

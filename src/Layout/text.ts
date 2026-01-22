@@ -40,9 +40,14 @@ export const EconomizerIconBig = styled(GiTakeMyMoney)`
     `}
 `
 
-export const ETitle = styled.div<{color?: string}>`
+export const ETitle = styled.div<{ color?: string }>`
     font-weight: 500;
     font-family: 'Ubuntu', sans-serif;
+    min-width: 80px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     ${responsivity.lowMobile`
         font-size: 18px;
@@ -51,7 +56,7 @@ export const ETitle = styled.div<{color?: string}>`
     ${responsivity.tablet`
         font-size: 20px;
     `}
-`
+`;
 
 export const ESubtitle = styled.div<{color?: string}>`
     font-weight: 400;

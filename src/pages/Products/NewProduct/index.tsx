@@ -81,7 +81,13 @@ export function NewProduct({ open, onClose }: NewProductProps) {
 
     return (
         <EcoModal open={open} onClose={handleClose} title="New Product" subtitle="register a new product">
-            <FlexCol style={{ width: '100%', rowGap: '8px' }}>
+            <FlexCol
+                style={{
+                    width: "100%",
+                    rowGap: "8px",
+                    height: "100%",
+                    minHeight: 0,
+                }}>
                 <TextField
                     label="Name*"
                     variant="filled"

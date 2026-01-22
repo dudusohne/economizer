@@ -136,7 +136,6 @@ export function CreateCategory({ open, onClose }: CreateProductProps) {
                     </Box>
                 </Box>
 
-
                 <EcoButton style={{ height: '50px' }} onClick={handleCreateCategory}>
                     CREATE CATEGORY
                 </EcoButton>

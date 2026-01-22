@@ -55,7 +55,7 @@ export function Home() {
             <NavBar />
             <NormalPageContainer>
                 <FlexRow style={{ alignItems: 'flex-end', justifyContent: 'space-between' }}>
-                    <ESubtitle>Ultimas Listas</ESubtitle>
+                    <ESubtitle>Listas recentes</ESubtitle>
                     <ListPlusIcon onClick={() => setOpenNewListModal(true)} />
                 </FlexRow>
                 <DividerHorizontal />

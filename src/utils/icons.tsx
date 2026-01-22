@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import { GiSlicedBread, GiFruitBowl, GiFrozenOrb } from "react-icons/gi";
 import { GiMeat } from "react-icons/gi";
 import { FaBottleWater } from "react-icons/fa6";
@@ -45,3 +46,18 @@ export const renderIcon = ({
     const Icon = icons[name];
     return <Icon size={size} color={color} />;
 };
+
+export function formatDateBR(date: string) {
+    if (date === "" || date === undefined) return
+    const [year, month, day] = date?.split('-');
+    return `${day}/${month}/${year}`;
+}
+
+export function getLocalISODate() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}

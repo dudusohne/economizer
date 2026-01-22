@@ -41,7 +41,7 @@ export function ProductCard({ name, prices, categories, onClick }: ProductType) 
         <>
             <ItemContainer onClick={onClick}>
                 <FlexRow style={{ alignItems: 'center', gap: '16px' }}>
-                    <div style={{ display: 'flex', backgroundColor: `${categoryColor[categories[0]?.color]}`, width: '50px', borderRadius: '50%', height: '50px', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', backgroundColor: `${mainCategory?.color ? categoryColor[mainCategory?.color] : ''}`, width: '50px', borderRadius: '50%', height: '50px', alignItems: 'center', justifyContent: 'center' }}>
                         {renderIcon({
                             name: mainCategory?.iconName,
                             size: 30,
